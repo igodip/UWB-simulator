@@ -16,21 +16,17 @@
 #include "ns3/core-module.h"
 #include "ns3/network-module.h"
 #include "ns3/applications-module.h"
-#include "ns3/wifi-module.h"
 #include "ns3/mobility-module.h"
-#include "ns3/ipv4-global-routing-helper.h"
-#include "ns3/internet-module.h"
+#include <ns3/uwb-module-helper.h>
 #include "ns3/log.h"
-#include "ns3/lr-wpan-module.h"
+
 
 using namespace ns3;
 
-NS_LOG_COMPONENT_DEFINE("PROTO_SIM_COMPONENT");
+NS_LOG_COMPONENT_DEFINE("UWB_MODULE_EXAMPLE_COMPONENT");
 
 int main(int argc, char** argv)
 {
-
-
 
 	Time::SetResolution(Time::NS);
 
@@ -40,9 +36,9 @@ int main(int argc, char** argv)
 	nodesContainer.Create(400);
 	targetsContainer.Create(8000);
 
-	LrWpanHelper lrWpanHelper;
-
-	lrWpanHelper.Install(nodesContainer);
+	UwbModuleHelper uwbModuleHelper;
+	uwbModuleHelper.Install(nodesContainer);
+	uwbModuleHelper.Install(targetsContainer);
 
 	// Nodes mobility
 
@@ -71,7 +67,7 @@ int main(int argc, char** argv)
 	targetsMobility.SetMobilityModel("ns3::ConstantPositionMobilityModel");
 
 	AsciiTraceHelper ascii;
-	lrWpanHelper.EnableAsciiAll(ascii.CreateFileStream("trace.tr"));
+	.EnableAsciiAll(ascii.CreateFileStream("trace.tr"));
 
 	Simulator::Stop(Seconds(20.0));
 

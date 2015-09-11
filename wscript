@@ -9,8 +9,10 @@
 def build(bld):
     module = bld.create_ns3_module('uwb-module', ['core'])
     module.source = [
-        'model/uwb-module.cc',
         'helper/uwb-module-helper.cc',
+		'model/uwb-module-net-device.cc',
+		'model/uwb-module-target-app.cc',
+		'model/uwb-module-node-app.cc'
         ]
 
     module_test = bld.create_ns3_module_test_library('uwb-module')
@@ -21,8 +23,11 @@ def build(bld):
     headers = bld(features='ns3header')
     headers.module = 'uwb-module'
     headers.source = [
-        'model/uwb-module.h',
         'helper/uwb-module-helper.h',
+		'model/uwb-module-net-device.h',
+		'model/uwb-module-channel.h',
+		'model/uwb-module-node-app.h',
+		'model/uwb-module-target-app.h'
         ]
 
     if bld.env.ENABLE_EXAMPLES:

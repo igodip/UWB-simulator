@@ -12,33 +12,15 @@
 * along with this program; if not, write to the Free Software
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
-#ifndef UWB_MODULE_HELPER_H
-#define UWB_MODULE_HELPER_H
 
-#include <ns3/net-device-container.h>
-#include <ns3/object-factory.h>
-#include <ns3/node-container.h>
+#include "uwb-module-channel.h"
+#include <ns3/log.h>
 
-namespace ns3 {
+namespace ns3
+{
+	NS_LOG_COMPONENT_DEFINE("UwbModuleChannel");
 
-	class UwbModuleHelper
-	{
-	public:
-		/**
-		*/
-		UwbModuleHelper();
-		/**
-		*/
-		NetDeviceContainer Install(NodeContainer c);
-		/**
-		*/
-		int64_t AssignStreams(NetDeviceContainer c, int64_t stream);
-	private:
-		ObjectFactory m_deviceFactory; //!< Object factory
 
-	};
 
 }
-
-#endif /* UWB_MODULE_HELPER_H */
 

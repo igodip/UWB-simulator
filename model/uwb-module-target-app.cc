@@ -13,12 +13,13 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
-#include "uwb-module.h"
+#include "uwb-module-target-app.h"
 
-namespace ns3 {
+#include <ns3/log.h>
 
-/* ... */
+namespace ns3
+{
 
+	NS_LOG_COMPONENT_DEFINE("UwbModuleTargetApp");
 
 }
-
