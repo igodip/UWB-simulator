@@ -13,35 +13,26 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
-#ifndef UWB_MODULE_SPECTRUM_SIGNAL_PARAMETERS_H
-#define UWB_MODULE_SPECTRUM_SIGNAL_PARAMETERS_H
+#ifndef UWB_MODULE_SPECTRUM_MODEL_FACTORY_H
+#define UWB_MODULE_SPECTRUM_MODEL_FACTORY_H
 
-#include <ns3/spectrum-signal-parameters.h>
-#include <ns3/packet-burst.h>
+#include <ns3/spectrum-value.h>
 
 namespace ns3
 {
-	class UwbModuleSpectrumSignalParameters : public SpectrumSignalParameters
-	{
+	class UwbModuleSpectrumModelFactory {
 	public:
+		static UwbModuleSpectrumModelFactory& getInstance(void);
+		Ptr<SpectrumModel> getSpectrumModel(void);
 
-		// inherited from SpectrumSignalParameters
-		virtual Ptr<SpectrumSignalParameters> Copy(void);
+	private:
 
-		/**
-		* default constructor
-		*/
-		UwbModuleSpectrumSignalParameters(void);
+		UwbModuleSpectrumModelFactory(void);
+		void createBands(void);
 
-		/**
-		* copy constructor
-		*/
-		UwbModuleSpectrumSignalParameters(const UwbModuleSpectrumSignalParameters& p);
+		Ptr<SpectrumModel> m_ptrSpectrumModel;
 
-		/**
-		* The packet burst being transmitted with this signal
-		*/
-		Ptr<PacketBurst> packetBurst;
+
 	};
 }
 

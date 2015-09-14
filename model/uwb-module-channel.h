@@ -16,7 +16,7 @@
 #ifndef UWB_MODULE_CHANNEL_H
 #define UWB_MODULE_CHANNEL_H
 
-#include <ns3\channel.h>
+#include <ns3/channel.h>
 
 namespace ns3
 {

@@ -24,6 +24,9 @@
 
 namespace ns3
 {
+
+	class UwbModulePhy;
+
 	class UwbModuleNetDevice : public NetDevice
 	{
 	public:

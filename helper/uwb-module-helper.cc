@@ -13,10 +13,11 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 #include "uwb-module-helper.h"
-#include "ns3/uwb-module-net-device.h"
+#include <ns3/uwb-module-net-device.h>
 #include "ns3/node.h"
 #include "ns3/node-container.h"
 #include "ns3/log.h"
+
 #include <ns3/single-model-spectrum-channel.h>
 #include <ns3/propagation-loss-model.h>
 #include <ns3/propagation-delay-model.h>

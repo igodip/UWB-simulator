@@ -19,6 +19,7 @@
 #include "uwb-module-net-device.h"
 #include <ns3/node.h>
 #include <ns3/log.h>
+#include <ns3/uwb-module-phy.h>
 
 namespace ns3
 {

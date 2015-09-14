@@ -13,30 +13,26 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
-#include "uwb-module-spectrum-signal-parameters.h"
-
 #include <ns3/log.h>
-#include <ns3/packet.h>
+#include <ns3/node.h>
+#include <ns3/mobility-helper.h>
+#include <ns3/uwb-module-helper.h>
 
-namespace ns3
+using namespace ns3;
+
+int main(int argc, char ** argv)
 {
-	NS_LOG_COMPONENT_DEFINE("UwbModuleSpectrumSignal Parameters");
 
-	UwbModuleSpectrumSignalParameters::UwbModuleSpectrumSignalParameters(void)
-	{
-		NS_LOG_FUNCTION(this);
-	}
+	Ptr<Node> n1, n2;
+	n1 = CreateObject<Node>();
+	n2 = CreateObject<Node>();
 
-	UwbModuleSpectrumSignalParameters::UwbModuleSpectrumSignalParameters(const UwbModuleSpectrumSignalParameters& p)
-		: SpectrumSignalParameters(p)
-	{
-		NS_LOG_FUNCTION(this << &p);
-		packetBurst = p.packetBurst->Copy();
-	}
+	NodeContainer nodeContainer(n1, n2);
 
-	Ptr<SpectrumSignalParameters> UwbModuleSpectrumSignalParameters::Copy(void)
-	{
-		NS_LOG_FUNCTION(this);
-		return Create<UwbModuleSpectrumSignalParameters>(*this);
-	}
+	UwbModuleHelper uwbModuleHelper;
+	uwbModuleHelper.Install(nodeContainer);
+
+
+
+	return 0;
 }
