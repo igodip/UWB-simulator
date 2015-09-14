@@ -20,6 +20,8 @@
 #include <ns3/spectrum-channel.h>
 #include <ns3/mac64-address.h>
 
+#include "uwb-module-phy.h"
+
 namespace ns3
 {
 	class UwbModuleNetDevice : public NetDevice
@@ -59,8 +61,9 @@ namespace ns3
 		virtual void SetReceiveCallback(NetDevice::ReceiveCallback cb);
 		virtual void SetPromiscReceiveCallback(PromiscReceiveCallback cb);
 		virtual bool SupportsSendFrom(void) const;
-
 		
+		void SetPhy(Ptr<UwbModulePhy> phy);
+		Ptr<UwbModulePhy> GetPhy() const;
 
 	protected:
 
@@ -77,9 +80,10 @@ namespace ns3
 		bool m_linkup;
 
 		uint32_t m_ifIndex;
-		Ptr<Channel> m_channel;
 		Mac64Address m_macAddress;
+
 		Ptr<Node> m_node;
+		Ptr<UwbModulePhy> m_phy;
 
 	};
 }

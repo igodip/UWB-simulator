@@ -12,37 +12,20 @@
 * along with this program; if not, write to the Free Software
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
-#ifndef UWB_MODULE_HELPER_H
-#define UWB_MODULE_HELPER_H
 
-#include <ns3/net-device-container.h>
-#include <ns3/object-factory.h>
-#include <ns3/node-container.h>
-#include <ns3/spectrum-channel.h>
+#include "uwb-module-phy.h"
 
-namespace ns3 {
+#include <ns3/log.h>
 
-	class UwbModuleHelper
+namespace ns3
+{
+	void UwbModulePhy::SetChannel(Ptr<SpectrumChannel> c)
 	{
-	public:
-		/**
-		*/
-		UwbModuleHelper();
-		/**
-		*/
-		NetDeviceContainer Install(NodeContainer c);
-		/**
-		*/
-		int64_t AssignStreams(NetDeviceContainer c, int64_t stream);
-	private:
+		m_channel = c;
+	}
 
-		ObjectFactory m_deviceFactory; //!< Object factory
-
-		Ptr<SpectrumChannel> m_channel;
-
-	};
-
+	Ptr<SpectrumChannel> UwbModulePhy::GetChannel() const
+	{
+		return m_channel;
+	}
 }
-
-#endif /* UWB_MODULE_HELPER_H */
-

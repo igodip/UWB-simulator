@@ -12,11 +12,15 @@
 * along with this program; if not, write to the Free Software
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
-#include "ns3/uwb-module-helper.h"
+#include "uwb-module-helper.h"
 #include "ns3/uwb-module-net-device.h"
 #include "ns3/node.h"
 #include "ns3/node-container.h"
 #include "ns3/log.h"
+#include <ns3/single-model-spectrum-channel.h>
+#include <ns3/propagation-loss-model.h>
+#include <ns3/propagation-delay-model.h>
+#include <ns3/double.h>
 
 
 namespace ns3 {
@@ -25,6 +29,16 @@ namespace ns3 {
 
 	UwbModuleHelper::UwbModuleHelper()
 	{
+		NS_LOG_FUNCTION(this);
+
+		m_channel = CreateObject<SingleModelSpectrumChannel>();
+		m_channel->SetAttribute("MaxLossDb", DoubleValue(200.0));
+
+		Ptr<LogDistancePropagationLossModel> propagationModel = CreateObject<LogDistancePropagationLossModel>();
+		m_channel->AddPropagationLossModel(propagationModel);
+
+		Ptr<ConstantSpeedPropagationDelayModel> delayModel = CreateObject<ConstantSpeedPropagationDelayModel>();
+		m_channel->SetPropagationDelayModel(delayModel);
 
 	}
 
@@ -39,7 +53,7 @@ namespace ns3 {
 			
 
 			Ptr<Node> node = c.Get(i);
-			NS_LOG_LOGIC("**** Install 6LoWPAN on node " << node->GetId());
+			NS_LOG_LOGIC("Installing netDevice on node " << node->GetId());
 
 			Ptr<UwbModuleNetDevice> dev = m_deviceFactory.Create<UwbModuleNetDevice>();
 			devs.Add(dev);
@@ -49,8 +63,10 @@ namespace ns3 {
 		return devs;
 	}
 
-	int64_t AssignStreams(NetDeviceContainer c, int64_t stream)
+	int64_t UwbModuleHelper::AssignStreams(NetDeviceContainer c, int64_t stream)
 	{
+		NS_LOG_FUNCTION(this);
+
 		return 0;
 	}
 

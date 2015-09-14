@@ -27,11 +27,21 @@ NS_LOG_COMPONENT_DEFINE("UWB_MODULE_RANGING_");
 int main(int argc, char** argv)
 {
 
-	Node node;
-	Node target;
+	Ptr<Node> node = CreateObject<Node>();
+	Ptr<Node> target = CreateObject<Node>();
+
+	NodeContainer nodesContainer(node);
+	NodeContainer targetsContainer(target);
 
 	MobilityHelper nodeMobility;
 	nodeMobility.SetMobilityModel("ns3::ConstantPositionMobilityModel");
+	//nodeMobility.SetPositionAllocator()
+
+	nodeMobility.Install(nodesContainer);
+
+	MobilityHelper targetMobility;
+	//targetMobility.SetMobilityModel()
+	//targetMobility.SetPositionAllocator();
 
 	//Simulation
 	Time::SetResolution(Time::NS);

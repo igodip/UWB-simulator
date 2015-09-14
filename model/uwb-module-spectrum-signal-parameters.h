@@ -12,37 +12,36 @@
 * along with this program; if not, write to the Free Software
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
-#ifndef UWB_MODULE_HELPER_H
-#define UWB_MODULE_HELPER_H
 
-#include <ns3/net-device-container.h>
-#include <ns3/object-factory.h>
-#include <ns3/node-container.h>
-#include <ns3/spectrum-channel.h>
+#ifndef UWB_MODULE_SPECTRUM_SIGNAL_PARAMETERS_H
+#define UWB_MODULE_SPECTRUM_SIGNAL_PARAMETERS_H
 
-namespace ns3 {
+#include <ns3/spectrum-signal-parameters.h>
+#include <ns3/packet-burst.h>
 
-	class UwbModuleHelper
+namespace ns3
+{
+	class UwbModuleSpectrumSignalParameters : public SpectrumSignalParameters
 	{
-	public:
-		/**
-		*/
-		UwbModuleHelper();
-		/**
-		*/
-		NetDeviceContainer Install(NodeContainer c);
-		/**
-		*/
-		int64_t AssignStreams(NetDeviceContainer c, int64_t stream);
-	private:
 
-		ObjectFactory m_deviceFactory; //!< Object factory
+		// inherited from SpectrumSignalParameters
+		virtual Ptr<SpectrumSignalParameters> Copy(void);
 
-		Ptr<SpectrumChannel> m_channel;
+		/**
+		* default constructor
+		*/
+		UwbModuleSpectrumSignalParameters(void);
 
+		/**
+		* copy constructor
+		*/
+		UwbModuleSpectrumSignalParameters(const UwbModuleSpectrumSignalParameters& p);
+
+		/**
+		* The packet burst being transmitted with this signal
+		*/
+		Ptr<PacketBurst> packetBurst;
 	};
-
 }
 
-#endif /* UWB_MODULE_HELPER_H */
-
+#endif

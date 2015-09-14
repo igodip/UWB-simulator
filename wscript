@@ -12,7 +12,9 @@ def build(bld):
         'helper/uwb-module-helper.cc',
 		'model/uwb-module-net-device.cc',
 		'model/uwb-module-target-app.cc',
-		'model/uwb-module-node-app.cc'
+		'model/uwb-module-node-app.cc',
+		'model/uwb-module-phy.cc',
+		'model/uwb-module-spectrum-signal-parameters.cc'
         ]
 
     module_test = bld.create_ns3_module_test_library('uwb-module')
@@ -27,7 +29,9 @@ def build(bld):
 		'model/uwb-module-net-device.h',
 		'model/uwb-module-channel.h',
 		'model/uwb-module-node-app.h',
-		'model/uwb-module-target-app.h'
+		'model/uwb-module-target-app.h',
+		'model/uwb-module-phy.h',
+		'model/uwb-module-spectrum-signal-parameters.h'
         ]
 
     if bld.env.ENABLE_EXAMPLES:

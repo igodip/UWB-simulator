@@ -81,13 +81,15 @@ namespace ns3
 	Ptr<Channel> UwbModuleNetDevice::GetChannel(void) const
 	{
 		NS_LOG_FUNCTION_NOARGS();
-		return m_channel;
+		return m_phy->GetChannel();
 	}
 
 	void UwbModuleNetDevice::SetChannel(Ptr<SpectrumChannel> c)
 	{
-		NS_LOG_FUNCTION_NOARGS();
-		m_channel = c;
+		NS_LOG_FUNCTION(this << c);
+
+		m_phy->SetChannel(c);
+		c->AddRx(m_phy);
 	}
 
 	bool UwbModuleNetDevice::Send(Ptr<Packet> packet, const Address& dest, uint16_t protocolNumber)
@@ -197,6 +199,16 @@ namespace ns3
 	bool UwbModuleNetDevice::NeedsArp(void) const
 	{
 		return false;
+	}
+
+	void UwbModuleNetDevice::SetPhy(Ptr<UwbModulePhy> phy)
+	{
+		m_phy = phy;
+	}
+	
+	Ptr<UwbModulePhy> UwbModuleNetDevice::GetPhy() const
+	{
+		return m_phy;
 	}
 
 }
