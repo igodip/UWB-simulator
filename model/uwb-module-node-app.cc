@@ -19,6 +19,6 @@
 
 namespace ns3
 {
-	NS_LOG_COMPONENT_DEFINE("UwbModuleTargetApp");
+	NS_LOG_COMPONENT_DEFINE("UwbModuleNodeApp");
 
 }

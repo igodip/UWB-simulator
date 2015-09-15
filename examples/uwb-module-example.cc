@@ -25,9 +25,19 @@ using namespace ns3;
 
 NS_LOG_COMPONENT_DEFINE("UWB_MODULE_EXAMPLE_COMPONENT");
 
+void sendPacket(Ptr<Node> n1)
+{
+	Ptr<Packet> p = Create<Packet>();
+
+	n1->GetDevice(0)->Send(p, Mac64Address("FF:FF:FF:FF:FF:FF:FF:FF"), 1);
+
+}
+
 int main(int argc, char** argv)
 {
-
+	//LogComponentEnable("UwbModuleNetDevice", LOG_LEVEL_ALL);
+	//LogComponentEnable("UwbModulePhy", LOG_LEVEL_ALL);
+	
 	Time::SetResolution(Time::NS);
 
 	NodeContainer nodesContainer;
@@ -66,10 +76,12 @@ int main(int argc, char** argv)
 
 	targetsMobility.SetMobilityModel("ns3::ConstantPositionMobilityModel");
 
-	AsciiTraceHelper ascii;
-	.EnableAsciiAll(ascii.CreateFileStream("trace.tr"));
+	AsciiTraceHelper asciiTraceHelper;
+	//ascii
+	//uwbModuleHelper.EnableAsciiAll(ascii.CreateFileStream("trace.tr"));
 
 	Simulator::Stop(Seconds(20.0));
+	Simulator::Schedule(Seconds(10.0), &sendPacket, nodesContainer.Get(0));
 
 	Simulator::Run();
 

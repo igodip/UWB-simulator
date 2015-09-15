@@ -26,6 +26,8 @@ namespace ns3
 
 	NS_LOG_COMPONENT_DEFINE("UwbModulePhy");
 
+	NS_OBJECT_ENSURE_REGISTERED(UwbModulePhy);
+
 	void UwbModulePhy::SetChannel(Ptr<SpectrumChannel> c)
 	{
 		NS_LOG_FUNCTION(this << &c);
@@ -81,11 +83,8 @@ namespace ns3
 	void UwbModulePhy::StartTx(Ptr<UwbModuleSpectrumSignalParameters> params)
 	{
 		NS_LOG_FUNCTION(this << params);
-
-		m_phyTxBeginTrace(params->packetBurst->GetPackets().front());
+		
 		m_channel->StartTx(params);
-
-
 
 		Simulator::Schedule(params->duration, &UwbModulePhy::EndTx, this, params);
 	}

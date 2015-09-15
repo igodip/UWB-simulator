@@ -104,6 +104,9 @@ namespace ns3
 
 		void StartTx(Ptr<UwbModuleSpectrumSignalParameters> params);
 		void EndTx(Ptr<UwbModuleSpectrumSignalParameters> params);
+
+		
+
 	private:
 
 		Ptr<SpectrumChannel> m_channel;

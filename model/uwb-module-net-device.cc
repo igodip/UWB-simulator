@@ -20,6 +20,9 @@
 #include <ns3/node.h>
 #include <ns3/log.h>
 #include <ns3/uwb-module-phy.h>
+#include <ns3/isotropic-antenna-model.h>
+#include <ns3/packet.h>
+#include <ns3/spectrum-value.h>
 
 namespace ns3
 {
@@ -34,6 +37,13 @@ namespace ns3
 
 		m_linkup = true;
 		m_macAddress = Mac64Address::Allocate();
+		m_phy = CreateObject<UwbModulePhy>();
+
+		Ptr<AntennaModel> antenna = CreateObject<IsotropicAntennaModel>();
+		//antenna->SetAttribute()
+		
+		m_phy->SetAntenna(antenna);
+		m_phy->SetDevice(this);
 	}
 
 	UwbModuleNetDevice::~UwbModuleNetDevice()
@@ -46,7 +56,8 @@ namespace ns3
 	{
 		NS_LOG_FUNCTION_NOARGS();
 
-		static TypeId tid = TypeId("ns3::UwbModuleNetDevice");
+		static TypeId tid = TypeId("ns3::UwbModuleNetDevice").
+			AddConstructor<UwbModuleNetDevice>();
 
 		return tid;
 	}
@@ -60,12 +71,17 @@ namespace ns3
 
 	void UwbModuleNetDevice::DoDispose(void)
 	{
+		m_phy->Dispose();
+		
 		m_node = 0;
+		m_phy = 0;
+		
+
 	}
 
 	void UwbModuleNetDevice::SetReceiveCallback(NetDevice::ReceiveCallback cb) 
 	{
-		
+		return;
 	}
 
 	void UwbModuleNetDevice::SetPromiscReceiveCallback(PromiscReceiveCallback cb)
@@ -95,7 +111,19 @@ namespace ns3
 
 	bool UwbModuleNetDevice::Send(Ptr<Packet> packet, const Address& dest, uint16_t protocolNumber)
 	{
-		NS_LOG_FUNCTION_NOARGS();
+		NS_LOG_FUNCTION(this << &packet << dest << protocolNumber);
+
+		Ptr<UwbModuleSpectrumSignalParameters> spectrumSignalParameters = Create<UwbModuleSpectrumSignalParameters>();
+
+		spectrumSignalParameters->duration = MicroSeconds(200.0);
+		spectrumSignalParameters->psd = m_spectrumValueHelper.CreateTxPowerSpectralDensity(0, 1);
+		spectrumSignalParameters->packetBurst = CreateObject<PacketBurst>();
+		spectrumSignalParameters->packetBurst->AddPacket(packet);
+		spectrumSignalParameters->txAntenna = m_phy->GetRxAntenna();
+		spectrumSignalParameters->txPhy = m_phy;
+
+		m_phy->StartTx(spectrumSignalParameters);
+
 		return true;
 	}
 
@@ -136,7 +164,8 @@ namespace ns3
 
 	void UwbModuleNetDevice::SetAddress(Address address)
 	{
-
+		//Mac64Address mac64Address = dynamic_cast
+		//Verify cast
 	}
 
 
@@ -147,7 +176,7 @@ namespace ns3
 	
 	bool UwbModuleNetDevice::IsBroadcast(void) const
 	{
-		NS_LOG_FUNCTION_NOARGS();
+		NS_LOG_FUNCTION(this);
 		return false;
 	}
 

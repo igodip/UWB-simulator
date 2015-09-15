@@ -7,7 +7,7 @@
 #     conf.check_nonfatal(header_name='stdint.h', define_name='HAVE_STDINT_H')
 
 def build(bld):
-    module = bld.create_ns3_module('uwb-module', ['core'])
+    module = bld.create_ns3_module('uwb-module',['core', 'network', 'mobility', 'spectrum', 'propagation','netanim'])
     module.source = [
         'helper/uwb-module-helper.cc',
 		'model/uwb-module-net-device.cc',

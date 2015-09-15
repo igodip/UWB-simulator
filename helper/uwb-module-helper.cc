@@ -41,6 +41,8 @@ namespace ns3 {
 		Ptr<ConstantSpeedPropagationDelayModel> delayModel = CreateObject<ConstantSpeedPropagationDelayModel>();
 		m_channel->SetPropagationDelayModel(delayModel);
 
+		m_deviceFactory.SetTypeId("ns3::UwbModuleNetDevice");
+
 	}
 
 	NetDeviceContainer UwbModuleHelper::Install(NodeContainer c)
@@ -52,15 +54,19 @@ namespace ns3 {
 		for (uint32_t i = 0; i < c.GetN(); ++i)
 		{
 			
-
+			
 			Ptr<Node> node = c.Get(i);
 			NS_LOG_LOGIC("Installing netDevice on node " << node->GetId());
-
-			Ptr<UwbModuleNetDevice> dev = m_deviceFactory.Create<UwbModuleNetDevice>();
+			
+			Ptr<UwbModuleNetDevice> dev = Create<UwbModuleNetDevice>();
+			
 			devs.Add(dev);
 			node->AddDevice(dev);
+			dev->SetChannel(m_channel);
+			
 			
 		}
+
 		return devs;
 	}
 

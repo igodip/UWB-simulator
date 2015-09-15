@@ -19,6 +19,7 @@
 #include <ns3/net-device.h>
 #include <ns3/spectrum-channel.h>
 #include <ns3/mac64-address.h>
+#include <ns3/uwb-module-spectrum-value-helper.h>
 
 #include "uwb-module-phy.h"
 
@@ -77,6 +78,7 @@ namespace ns3
 		void LinkDown(void);
 
 		void CompleteConfig(void);
+
 	private:
 
 		bool m_configComplete;
@@ -87,6 +89,8 @@ namespace ns3
 
 		Ptr<Node> m_node;
 		Ptr<UwbModulePhy> m_phy;
+
+		UwbModuleSpectrumValueHelper m_spectrumValueHelper;
 
 	};
 }
