@@ -23,6 +23,11 @@
 #include <ns3/propagation-delay-model.h>
 #include <ns3/double.h>
 
+/**
+Ghassemzadeh, Saeed S., et al. "A statistical path loss model for in-home UWB channels."
+Ultra Wideband Systems and Technologies, 2002. 
+Digest of Papers. 2002 IEEE Conference on. IEEE, 2002.
+*/
 
 namespace ns3 {
 	
@@ -33,12 +38,16 @@ namespace ns3 {
 		NS_LOG_FUNCTION(this);
 
 		m_channel = CreateObject<SingleModelSpectrumChannel>();
-		m_channel->SetAttribute("MaxLossDb", DoubleValue(200.0));
+		m_channel->SetAttribute("MaxLossDb", DoubleValue(150.0));
+		
+
 
 		Ptr<LogDistancePropagationLossModel> propagationModel = CreateObject<LogDistancePropagationLossModel>();
+		propagationModel->SetAttribute("Exponent", DoubleValue(1.7));
 		m_channel->AddPropagationLossModel(propagationModel);
 
 		Ptr<ConstantSpeedPropagationDelayModel> delayModel = CreateObject<ConstantSpeedPropagationDelayModel>();
+
 		m_channel->SetPropagationDelayModel(delayModel);
 
 		m_deviceFactory.SetTypeId("ns3::UwbModuleNetDevice");
@@ -53,7 +62,6 @@ namespace ns3 {
 
 		for (uint32_t i = 0; i < c.GetN(); ++i)
 		{
-			
 			
 			Ptr<Node> node = c.Get(i);
 			NS_LOG_LOGIC("Installing netDevice on node " << node->GetId());

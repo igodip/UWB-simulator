@@ -23,7 +23,9 @@
 
 using namespace ns3;
 
-NS_LOG_COMPONENT_DEFINE("UWB_MODULE_EXAMPLE_COMPONENT");
+NS_LOG_COMPONENT_DEFINE("UwbModuleExample");
+
+// Micron example
 
 void sendPacket(Ptr<Node> n1)
 {
@@ -35,7 +37,7 @@ void sendPacket(Ptr<Node> n1)
 
 int main(int argc, char** argv)
 {
-	//LogComponentEnable("UwbModuleNetDevice", LOG_LEVEL_ALL);
+	//LogComponentEnable("UwbModuleExample", LOG_LEVEL_ALL);
 	//LogComponentEnable("UwbModulePhy", LOG_LEVEL_ALL);
 	
 	Time::SetResolution(Time::NS);
@@ -43,8 +45,8 @@ int main(int argc, char** argv)
 	NodeContainer nodesContainer;
 	NodeContainer targetsContainer;
 
-	nodesContainer.Create(400);
-	targetsContainer.Create(8000);
+	nodesContainer.Create(200);
+	targetsContainer.Create(2000);
 
 	UwbModuleHelper uwbModuleHelper;
 	uwbModuleHelper.Install(nodesContainer);
@@ -71,8 +73,8 @@ int main(int argc, char** argv)
 	MobilityHelper targetsMobility;
 
 	targetsMobility.SetPositionAllocator("ns3::RandomRectanglePositionAllocator",
-		"X", StringValue("ns3::UniformRandomVariable[Min=-100.0|Max=100]"),
-		"Y", StringValue("ns3::UniformRandomVariable[Min=-100|Max=100]"));
+		"X", StringValue("ns3::UniformRandomVariable[Min=-100.0|Max=100.0]"),
+		"Y", StringValue("ns3::UniformRandomVariable[Min=-100.0|Max=100.0]"));
 
 	targetsMobility.SetMobilityModel("ns3::ConstantPositionMobilityModel");
 
@@ -81,7 +83,10 @@ int main(int argc, char** argv)
 	//uwbModuleHelper.EnableAsciiAll(ascii.CreateFileStream("trace.tr"));
 
 	Simulator::Stop(Seconds(20.0));
-	Simulator::Schedule(Seconds(10.0), &sendPacket, nodesContainer.Get(0));
+	for (uint32_t i = 0; i < 10; ++i)
+	{
+		Simulator::Schedule(Seconds(10.0), &sendPacket, nodesContainer.Get(i));
+	}
 
 	Simulator::Run();
 

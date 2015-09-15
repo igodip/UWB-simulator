@@ -17,7 +17,12 @@ def build(bld):
 		'model/uwb-module-phy.cc',
 		'model/uwb-module-spectrum-signal-parameters.cc',
 		'model/uwb-module-spectrum-model-factory.cc',
-		'model/uwb-module-spectrum-value-helper.cc'
+		'model/uwb-module-spectrum-value-helper.cc',
+		'model/states/uwb-module-abstract-state.cc',
+		'model/states/uwb-module-neighbor-discovery-state.cc',
+		'model/states/uwb-module-drand-state.cc',
+		'model/mac/uwb-module-mac-trailer.cc',
+		'model/mac/uwb-module-mac-header.cc'
         ]
 
     module_test = bld.create_ns3_module_test_library('uwb-module')
@@ -36,7 +41,12 @@ def build(bld):
 		'model/uwb-module-phy.h',
 		'model/uwb-module-spectrum-signal-parameters.h',
 		'model/uwb-module-spectrum-model-factory.h',
-		'model/uwb-module-spectrum-value-helper.h'
+		'model/uwb-module-spectrum-value-helper.h',
+		'model/states/uwb-module-abstract-state.h',
+		'model/states/uwb-module-neighbor-discovery-state.h',
+		'model/states/uwb-module-drand-state.h',
+		'model/mac/uwb-module-mac-trailer.h',
+		'model/mac/uwb-module-mac-header.h'
         ]
 
     if bld.env.ENABLE_EXAMPLES:

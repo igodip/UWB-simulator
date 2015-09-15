@@ -42,6 +42,7 @@ int main(int argc, char ** argv)
 
 	LogComponentEnable("UwbModuleNetDevice", LOG_LEVEL_ALL);
 	LogComponentEnable("UwbModulePhy", LOG_LEVEL_ALL);
+	LogComponentEnable("SingleModelSpectrumChannel", LOG_LEVEL_ALL);
 	LogComponentEnable("UwbModulePhyExample",LOG_LEVEL_ALL);
 
 	Ptr<Node> n1, n2;
@@ -64,17 +65,12 @@ int main(int argc, char ** argv)
 
 	mobilityHelper.Install(nodeContainer);
 
-	Ptr<MobilityModel> model1 = n1->GetObject<MobilityModel>();
-	Ptr<MobilityModel> model2 = n2->GetObject<MobilityModel>();
-
-	//NS_LOG_INFO((DynamicCast<UwbModuleNetDevice>(netDeviceContainer.Get(0)))->GetNode()->GetObject<MobilityModel>()->GetPosition());
-	//NS_LOG_INFO("" << model2->GetPosition() << " " );
 
 	//Simulator
 	Time::SetResolution(Time::NS);
 
 	Simulator::Schedule(Seconds(10.0),&sendPacket,n1);
-	Simulator::Schedule(Seconds(15.0), &sendPacket, n1);
+	Simulator::Schedule(Seconds(15.0),&sendPacket, n1);
 
 	Simulator::Stop(Seconds(20.0));
 
