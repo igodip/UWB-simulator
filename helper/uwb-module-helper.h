@@ -30,7 +30,10 @@ namespace ns3 {
 		UwbModuleHelper();
 		/**
 		*/
-		NetDeviceContainer Install(NodeContainer c);
+		NetDeviceContainer InstallNodes(NodeContainer c);
+		/**
+		*/
+		NetDeviceContainer InstallTargets(NodeContainer c);
 		/**
 		*/
 		int64_t AssignStreams(NetDeviceContainer c, int64_t stream);

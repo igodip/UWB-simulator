@@ -121,7 +121,8 @@ namespace ns3
 		TracedCallback<Ptr<const Packet> > m_phyTxBeginTrace;
 
 		Ptr<AntennaModel> m_antenna;
-		EventId m_receiveOn;
+		EventId m_busy;
+		
 
 	};
 }

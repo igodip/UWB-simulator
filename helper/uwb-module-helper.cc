@@ -22,6 +22,7 @@
 #include <ns3/propagation-loss-model.h>
 #include <ns3/propagation-delay-model.h>
 #include <ns3/double.h>
+#include <ns3/uwb-module-node-app.h>
 
 /**
 Ghassemzadeh, Saeed S., et al. "A statistical path loss model for in-home UWB channels."
@@ -38,9 +39,7 @@ namespace ns3 {
 		NS_LOG_FUNCTION(this);
 
 		m_channel = CreateObject<SingleModelSpectrumChannel>();
-		m_channel->SetAttribute("MaxLossDb", DoubleValue(150.0));
-		
-
+		m_channel->SetAttribute("MaxLossDb", DoubleValue(70));
 
 		Ptr<LogDistancePropagationLossModel> propagationModel = CreateObject<LogDistancePropagationLossModel>();
 		propagationModel->SetAttribute("Exponent", DoubleValue(1.7));
@@ -49,12 +48,11 @@ namespace ns3 {
 		Ptr<ConstantSpeedPropagationDelayModel> delayModel = CreateObject<ConstantSpeedPropagationDelayModel>();
 
 		m_channel->SetPropagationDelayModel(delayModel);
-
 		m_deviceFactory.SetTypeId("ns3::UwbModuleNetDevice");
 
 	}
 
-	NetDeviceContainer UwbModuleHelper::Install(NodeContainer c)
+	NetDeviceContainer UwbModuleHelper::InstallNodes(NodeContainer c)
 	{
 		NS_LOG_FUNCTION(this);
 
@@ -64,15 +62,45 @@ namespace ns3 {
 		{
 			
 			Ptr<Node> node = c.Get(i);
-			NS_LOG_LOGIC("Installing netDevice on node " << node->GetId());
+			NS_LOG_LOGIC("Installing node netDevice on node " << node->GetId());
 			
 			Ptr<UwbModuleNetDevice> dev = Create<UwbModuleNetDevice>();
+			Ptr<UwbModuleNodeApp> nodeApp = CreateObject<UwbModuleNodeApp>(dev);
 			
 			devs.Add(dev);
 			node->AddDevice(dev);
+
+			//NetDevice::ReceiveCallback receiveCallback = MakeCallback<
+
 			dev->SetChannel(m_channel);
+			dev->SetManager(nodeApp);
 			
+			nodeApp->Start();
 			
+		}
+
+		return devs;
+	}
+
+	NetDeviceContainer UwbModuleHelper::InstallTargets(NodeContainer c)
+	{
+		NS_LOG_FUNCTION(this);
+
+		NetDeviceContainer devs;
+
+		for (uint32_t i = 0; i < c.GetN(); ++i)
+		{
+
+			Ptr<Node> node = c.Get(i);
+			NS_LOG_LOGIC("Installing netDevice on node " << node->GetId());
+
+			Ptr<UwbModuleNetDevice> dev = Create<UwbModuleNetDevice>();
+
+			devs.Add(dev);
+			node->AddDevice(dev);
+			dev->SetChannel(m_channel);
+
+
 		}
 
 		return devs;

@@ -52,7 +52,7 @@ int main(int argc, char ** argv)
 	NodeContainer nodeContainer(n1, n2);
 
 	UwbModuleHelper uwbModuleHelper;
-	NetDeviceContainer netDeviceContainer = uwbModuleHelper.Install(nodeContainer);
+	NetDeviceContainer netDeviceContainer = uwbModuleHelper.InstallNodes(nodeContainer);
 
 	MobilityHelper mobilityHelper;
 

@@ -49,8 +49,8 @@ int main(int argc, char** argv)
 	targetsContainer.Create(2000);
 
 	UwbModuleHelper uwbModuleHelper;
-	uwbModuleHelper.Install(nodesContainer);
-	uwbModuleHelper.Install(targetsContainer);
+	uwbModuleHelper.InstallNodes(nodesContainer);
+	uwbModuleHelper.InstallTargets(targetsContainer);
 
 	// Nodes mobility
 

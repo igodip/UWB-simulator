@@ -16,12 +16,38 @@
 #ifndef UWB_MODULE_NODE_APP_H
 #define UWB_MODULE_NODE_APP_H
 
-#include <ns3/object.h>
+#include "uwb-module-manager.h"
+
+#include <ns3/uwb-module-net-device.h>
+#include <ns3/uwb-module-nd-protocol.h>
+#include <ns3/event-id.h>
+#include <set>
 
 namespace ns3
 {
-	class UwbModuleNodeApp : public Object
+	class UwbModuleNodeApp : public UwbModuleManager
 	{
+	public:
+
+		UwbModuleNodeApp(Ptr<UwbModuleNetDevice> netDevice);
+		virtual ~UwbModuleNodeApp();
+
+		virtual void Receive(Ptr<Packet> packet);
+		virtual void Start();
+		
+		const std::set<Mac64Address> & GetNeighbors() const;
+
+	protected:
+
+		void EndNdPhase();
+		void BroadcastPingPacket();
+
+		EventId m_endPhase;
+		EventId m_broadcastPhase;
+
+		Ptr<UwbModuleNetDevice> m_netDevice;
+		std::set<Mac64Address> m_neighbors;
+		UwbModuleNdProtocol m_ndProtocol;
 
 	};
 }

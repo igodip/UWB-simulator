@@ -13,25 +13,31 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
-#ifndef UWB_MODULE_NEIGHBOR_DISCOVERY_STATE_H
-#define UWB_MODULE_NEIGHBOR_DISCOVERY_STATE_H
+#ifndef UWB_MODULE_ND_PROTOCOL_H
+#define UWB_MODULE_ND_PROTOCOL_H
 
-#include "uwb-module-abstract-state.h"
+#include <ns3/trailer.h>
+#include <ns3/packet.h>
+#include <ns3/mac64-address.h>
+#include <ns3/uwb-module-net-device.h>
 
 namespace ns3
 {
-	class UwbModuleNeighborDiscoveryState : public UwbModuleAbstractState
+	class UwbModuleNdProtocol
 	{
 	public:
+		UwbModuleNdProtocol();
+		virtual ~UwbModuleNdProtocol();
 
-		UwbModuleNeighborDiscoveryState();
-		virtual ~UwbModuleNeighborDiscoveryState();
+		Ptr<Packet> GeneratePingPacket(const Mac64Address & senderAddress) ;
+		Mac64Address GetSenderAddress(Ptr<const Packet>) ;
 
-		virtual void Run();
+	private:
 
-	protected:
-		
+
+
 	};
 }
+
 
 #endif

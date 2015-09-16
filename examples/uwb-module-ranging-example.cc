@@ -22,7 +22,7 @@
 
 using namespace ns3;
 
-NS_LOG_COMPONENT_DEFINE("UWB_MODULE_RANGING_");
+NS_LOG_COMPONENT_DEFINE("UwBModuleRangingExample");
 
 int main(int argc, char** argv)
 {

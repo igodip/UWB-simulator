@@ -22,7 +22,10 @@ namespace ns3
 {
 	class UwbModuleAbstractState : public Object
 	{
-
+		virtual void StartTx();
+		virtual void StartRx();
+		virtual void EndTx();
+		virtual void EndRx();
 	};
 }
 

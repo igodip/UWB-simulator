@@ -10,3 +10,5 @@ def build(bld):
 	obj = bld.create_ns3_program('uwb-module-ranging-example', ['uwb-module'])
 	obj.source = 'uwb-module-ranging-example.cc'
 
+	obj = bld.create_ns3_program('uwb-module-nd-example', ['uwb-module'])
+	obj.source = 'uwb-module-nd-example.cc'

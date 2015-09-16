@@ -13,24 +13,19 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
-#ifndef UWB_MODULE_NEIGHBOR_DISCOVERY_STATE_H
-#define UWB_MODULE_NEIGHBOR_DISCOVERY_STATE_H
+#ifndef UWB_MODULE_MANAGER
+#define UWB_MODULE_MANAGER
 
-#include "uwb-module-abstract-state.h"
+#include <ns3/object.h>
+#include <ns3/packet.h>
 
 namespace ns3
 {
-	class UwbModuleNeighborDiscoveryState : public UwbModuleAbstractState
+	class UwbModuleManager : public Object
 	{
 	public:
-
-		UwbModuleNeighborDiscoveryState();
-		virtual ~UwbModuleNeighborDiscoveryState();
-
-		virtual void Run();
-
-	protected:
-		
+		virtual void Receive(Ptr<Packet> packet) = 0;
+		virtual void Start() = 0;
 	};
 }
 

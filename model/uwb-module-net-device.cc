@@ -64,13 +64,14 @@ namespace ns3
 
 	void UwbModuleNetDevice::DoInitialize(void)
 	{
-		NS_LOG_FUNCTION(this);
+		NS_LOG_FUNCTION_NOARGS();
 
 		NetDevice::DoInitialize();
 	}
 
 	void UwbModuleNetDevice::DoDispose(void)
 	{
+		NS_LOG_FUNCTION_NOARGS();
 		m_phy->Dispose();
 		
 		m_node = 0;
@@ -81,16 +82,19 @@ namespace ns3
 
 	void UwbModuleNetDevice::SetReceiveCallback(NetDevice::ReceiveCallback cb) 
 	{
+		NS_LOG_FUNCTION(this);
 		return;
 	}
 
 	void UwbModuleNetDevice::SetPromiscReceiveCallback(PromiscReceiveCallback cb)
 	{
+		NS_LOG_FUNCTION(this);
 		return;
 	}
 	
 	bool UwbModuleNetDevice::SupportsSendFrom() const
 	{
+		NS_LOG_FUNCTION_NOARGS();
 		return true;
 	}
 
@@ -164,6 +168,7 @@ namespace ns3
 
 	void UwbModuleNetDevice::SetAddress(Address address)
 	{
+		NS_LOG_FUNCTION(this << address);
 		//Mac64Address mac64Address = dynamic_cast
 		//Verify cast
 	}
@@ -171,12 +176,12 @@ namespace ns3
 
 	void UwbModuleNetDevice::AddLinkChangeCallback(Callback<void> callback)
 	{
-		NS_LOG_FUNCTION(this);
+		NS_LOG_FUNCTION(this << &callback);
 	}
 	
 	bool UwbModuleNetDevice::IsBroadcast(void) const
 	{
-		NS_LOG_FUNCTION(this);
+		NS_LOG_FUNCTION_NOARGS();
 		return false;
 	}
 
@@ -188,57 +193,88 @@ namespace ns3
 
 	bool UwbModuleNetDevice::IsMulticast(void) const
 	{
+		NS_LOG_FUNCTION_NOARGS();
 		return false;
 	}
 
 	Address UwbModuleNetDevice::GetMulticast(Ipv4Address multicastGroup) const
 	{
+		NS_LOG_FUNCTION(this << multicastGroup);
 		return Mac64Address();
 	}
 
 	Address UwbModuleNetDevice::GetMulticast(Ipv6Address addr) const
 	{
+		NS_LOG_FUNCTION(this << addr);
 		return Mac64Address();
 	}
 
 	bool UwbModuleNetDevice::IsBridge(void) const
 	{
+		NS_LOG_FUNCTION_NOARGS();
 		return false;
 	}
 
 	bool UwbModuleNetDevice::IsPointToPoint(void) const
 	{
+		NS_LOG_FUNCTION_NOARGS();
 		return false;
 	}
 
 	bool UwbModuleNetDevice::SendFrom(Ptr<Packet> packet, const Address& source, const Address& dest, uint16_t protocolNumber)
 	{
+		NS_LOG_FUNCTION(this << packet << source << dest << protocolNumber);
 		return false;
 	}
 
 	Ptr<Node> UwbModuleNetDevice::GetNode(void) const
 	{
+		NS_LOG_FUNCTION_NOARGS();
 		return m_node;
 	}
 
 	void UwbModuleNetDevice::SetNode(Ptr<Node> node)
 	{
+		NS_LOG_FUNCTION(this << node);
 		m_node = node;
 	}
 
 	bool UwbModuleNetDevice::NeedsArp(void) const
 	{
+		NS_LOG_FUNCTION(this);
 		return false;
 	}
 
 	void UwbModuleNetDevice::SetPhy(Ptr<UwbModulePhy> phy)
 	{
+		NS_LOG_FUNCTION(this << phy);
 		m_phy = phy;
 	}
 	
 	Ptr<UwbModulePhy> UwbModuleNetDevice::GetPhy() const
 	{
+		NS_LOG_FUNCTION_NOARGS();
 		return m_phy;
+	}
+
+	void UwbModuleNetDevice::SetManager(Ptr<UwbModuleManager> manager)
+	{
+		NS_LOG_FUNCTION(this << manager);
+		m_manager = manager;
+		
+	}
+
+	Ptr<UwbModuleManager> UwbModuleNetDevice::GetManager() const
+	{
+		NS_LOG_FUNCTION(this);
+		return m_manager;
+	}
+
+	void UwbModuleNetDevice::Receive(Ptr<Packet> p, const Address & address)
+	{
+		NS_LOG_FUNCTION(this << p << address);
+
+		m_manager->Receive(p);
 	}
 
 }

@@ -16,9 +16,97 @@
 #include "uwb-module-node-app.h"
 
 #include <ns3/log.h>
+#include <ns3/simulator.h>
+#include <ns3/random-variable-stream.h>
+#include <ns3/double.h>
+#include <ns3/nstime.h>
 
 namespace ns3
 {
 	NS_LOG_COMPONENT_DEFINE("UwbModuleNodeApp");
+
+	UwbModuleNodeApp::UwbModuleNodeApp(Ptr<UwbModuleNetDevice> netDevice)
+	{
+		NS_LOG_FUNCTION(this << netDevice);
+		m_netDevice = netDevice;
+	}
+
+	UwbModuleNodeApp::~UwbModuleNodeApp()
+	{
+		NS_LOG_FUNCTION_NOARGS();
+	}
+
+	void UwbModuleNodeApp::Receive(Ptr<Packet> packet)
+	{
+		NS_LOG_FUNCTION(this << packet);
+
+		
+		// Aggiorno il set
+		Mac64Address mac = m_ndProtocol.GetSenderAddress(packet);
+		// Controllo se il numero dei vicini è aumentato o no.
+		uint32_t size = m_neighbors.size();
+
+		m_neighbors.insert(mac);
+		// Se il numero dei vicini è aumentato, resetto il timer di stop
+
+		if (m_neighbors.size() > size)
+		{
+			m_endPhase = Simulator::Schedule(Seconds(5), &UwbModuleNodeApp::EndNdPhase, this);
+			NS_LOG_INFO(this << " Vicino aggiunto " << size);
+		}
+		
+	}
+
+	void UwbModuleNodeApp::Start()
+	{
+		
+		NS_LOG_FUNCTION(this);
+
+		Ptr<UniformRandomVariable> urv = CreateObject<UniformRandomVariable>();
+		urv->SetAttribute("Min",DoubleValue(0.0));
+		urv->SetAttribute("Max",DoubleValue(1.0));		
+
+		m_broadcastPhase = Simulator::Schedule(Seconds(urv->GetValue()), &UwbModuleNodeApp::BroadcastPingPacket, this);
+		m_endPhase = Simulator::Schedule(Seconds(5), &UwbModuleNodeApp::EndNdPhase, this);
+
+		//Attivo anche il timer di stop
+
+	}
+
+	void UwbModuleNodeApp::EndNdPhase()
+	{
+		NS_LOG_FUNCTION(this);
+
+		//Resetto il timer di broadcastPing
+		if (m_broadcastPhase.IsExpired())
+		{
+			return;
+		}
+
+		m_broadcastPhase.Cancel();
+
+		//Passo alla fase successiva
+
+
+	}
+
+	void UwbModuleNodeApp::BroadcastPingPacket()
+	{
+		NS_LOG_FUNCTION(this);
+
+		Mac64Address mac;
+
+		Ptr<Packet> p = m_ndProtocol.GeneratePingPacket(mac.ConvertFrom(m_netDevice->GetAddress()));
+		m_netDevice->Send(p,Mac64Address("FF:FF:FF:FF:FF:FF:FF:FF"),10);
+
+		m_broadcastPhase = Simulator::Schedule(MilliSeconds(200), &UwbModuleNodeApp::BroadcastPingPacket, this);
+		
+	}
+
+	const std::set<Mac64Address> & UwbModuleNodeApp::GetNeighbors() const
+	{
+		return m_neighbors;
+	}
+
 
 }

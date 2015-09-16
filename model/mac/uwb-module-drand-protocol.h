@@ -13,25 +13,20 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
-#ifndef UWB_MODULE_NEIGHBOR_DISCOVERY_STATE_H
-#define UWB_MODULE_NEIGHBOR_DISCOVERY_STATE_H
+#ifndef UWB_MODULE_DRAND_PROTOCOL_H
+#define UWB_MODULE_DRAND_PROTOCOL_H
 
-#include "uwb-module-abstract-state.h"
 
 namespace ns3
 {
-	class UwbModuleNeighborDiscoveryState : public UwbModuleAbstractState
+	class UwbModuleDrandProtocol 
 	{
 	public:
 
-		UwbModuleNeighborDiscoveryState();
-		virtual ~UwbModuleNeighborDiscoveryState();
-
-		virtual void Run();
-
-	protected:
+	private:
 		
 	};
 }
+
 
 #endif

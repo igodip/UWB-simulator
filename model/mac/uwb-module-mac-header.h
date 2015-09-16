@@ -13,8 +13,8 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
-#ifndef UWB_MODULE_DRAND_STATE_H
-#define UWB_MODULE_DRAND_STATE_H
+#ifndef UWB_MODULE_MAC_HEADER_H
+#define UWB_MODULE_MAC_HEADER_H
 
 #include <ns3/header.h>
 

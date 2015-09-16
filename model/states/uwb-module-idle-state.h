@@ -12,3 +12,13 @@
 * along with this program; if not, write to the Free Software
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
+
+#ifndef UWB_MODULE_IDLE_STATE_H
+#define UWB_MODULE_IDLE_STATE_H
+
+namespace ns3
+{
+
+}
+
+#endif

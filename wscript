@@ -22,7 +22,9 @@ def build(bld):
 		'model/states/uwb-module-neighbor-discovery-state.cc',
 		'model/states/uwb-module-drand-state.cc',
 		'model/mac/uwb-module-mac-trailer.cc',
-		'model/mac/uwb-module-mac-header.cc'
+		'model/mac/uwb-module-mac-header.cc',
+		'model/mac/uwb-module-nd-protocol.cc',
+		'model/uwb-module-manager.cc'
         ]
 
     module_test = bld.create_ns3_module_test_library('uwb-module')
@@ -46,7 +48,9 @@ def build(bld):
 		'model/states/uwb-module-neighbor-discovery-state.h',
 		'model/states/uwb-module-drand-state.h',
 		'model/mac/uwb-module-mac-trailer.h',
-		'model/mac/uwb-module-mac-header.h'
+		'model/mac/uwb-module-mac-header.h',
+		'model/mac/uwb-module-nd-protocol.h',
+		'model/uwb-module-manager.h'
         ]
 
     if bld.env.ENABLE_EXAMPLES:

@@ -13,25 +13,11 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
-#ifndef UWB_MODULE_NEIGHBOR_DISCOVERY_STATE_H
-#define UWB_MODULE_NEIGHBOR_DISCOVERY_STATE_H
+#include "uwb-module-manager.h"
 
-#include "uwb-module-abstract-state.h"
+#include <ns3/log.h>
 
 namespace ns3
 {
-	class UwbModuleNeighborDiscoveryState : public UwbModuleAbstractState
-	{
-	public:
-
-		UwbModuleNeighborDiscoveryState();
-		virtual ~UwbModuleNeighborDiscoveryState();
-
-		virtual void Run();
-
-	protected:
-		
-	};
+	NS_LOG_COMPONENT_DEFINE("UwbModuleManager");
 }
-
-#endif

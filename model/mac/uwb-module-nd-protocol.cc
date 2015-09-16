@@ -13,19 +13,46 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
-#include "uwb-module-neighbor-discovery-state.h"
+#include "uwb-module-nd-protocol.h"
+
 #include <ns3/log.h>
+
+
 
 namespace ns3
 {
-	
-	NS_LOG_COMPONENT_DEFINE("UwbModuleNeighborDiscoveryState");
 
-	void UwbModuleNeighborDiscoveryState::Run()
+	NS_LOG_COMPONENT_DEFINE("UwbModuleNdProtocol");
+
+	UwbModuleNdProtocol::UwbModuleNdProtocol()
 	{
-
-		//Send packets and listen for other packets
-
+		NS_LOG_FUNCTION_NOARGS();
 	}
 
+	Ptr<Packet> UwbModuleNdProtocol::GeneratePingPacket(const Mac64Address & senderAddress)
+	{
+		
+		static uint8_t buffer[8];
+		
+		senderAddress.CopyTo(buffer);
+		Ptr<Packet> packet = Create<Packet>(buffer,8);
+
+		return packet;
+	}
+
+	Mac64Address UwbModuleNdProtocol::GetSenderAddress(Ptr<const Packet> packet)
+	{
+		static uint8_t buffer[8];
+		packet->CopyData(buffer, 8);
+
+		Mac64Address address;
+		address.CopyFrom(buffer);
+
+		return address;
+	}
+
+	UwbModuleNdProtocol::~UwbModuleNdProtocol()
+	{
+		NS_LOG_FUNCTION_NOARGS();
+	}
 }

@@ -16,12 +16,21 @@
 #ifndef UWB_MODULE_TARGET_APP_H
 #define UWB_MODULE_TARGET_APP_H
 
-#include <ns3/object.h>
+#include "uwb-module-manager.h"
+
 
 namespace ns3
 {
-	class UwbModuleTargetApp : public Object
+	class UwbModuleTargetApp : public UwbModuleManager
 	{
+	public:
+
+		virtual void Receive(Ptr<Packet> packet);
+		virtual void Start();
+
+	protected:
+
+
 
 	};
 }

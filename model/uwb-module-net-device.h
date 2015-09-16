@@ -20,6 +20,7 @@
 #include <ns3/spectrum-channel.h>
 #include <ns3/mac64-address.h>
 #include <ns3/uwb-module-spectrum-value-helper.h>
+#include <ns3/uwb-module-manager.h>
 
 #include "uwb-module-phy.h"
 
@@ -69,6 +70,9 @@ namespace ns3
 		void SetPhy(Ptr<UwbModulePhy> phy);
 		Ptr<UwbModulePhy> GetPhy() const;
 
+		void SetManager(Ptr<UwbModuleManager> manager);
+		Ptr<UwbModuleManager> GetManager() const;
+
 	protected:
 
 		virtual void DoDispose(void);
@@ -89,6 +93,7 @@ namespace ns3
 
 		Ptr<Node> m_node;
 		Ptr<UwbModulePhy> m_phy;
+		Ptr<UwbModuleManager> m_manager;
 
 		UwbModuleSpectrumValueHelper m_spectrumValueHelper;
 

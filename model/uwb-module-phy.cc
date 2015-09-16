@@ -56,6 +56,14 @@ namespace ns3
 	{
 		NS_LOG_FUNCTION(this << params);
 
+		// If is busy receiving discard a packet
+		if (m_busy.IsRunning())
+		{
+			NS_LOG_INFO("Busy receiving another packet, packet discarded");
+			return;
+		}
+			
+
 		UwbModuleSpectrumSignalParameters psdHelper;
 
 		Ptr<UwbModuleSpectrumSignalParameters> uwbRxParams = DynamicCast<UwbModuleSpectrumSignalParameters>(params);
@@ -63,7 +71,7 @@ namespace ns3
 		// It isn't an our packet
 		if (uwbRxParams == 0)
 		{
-			m_receiveOn = Simulator::Schedule(params->duration, &UwbModulePhy::EndRx, this, params);
+			m_busy = Simulator::Schedule(params->duration, &UwbModulePhy::EndRx, this, params);
 			return;
 		}
 
@@ -72,12 +80,22 @@ namespace ns3
 
 		Time duration;
 
-		m_receiveOn = Simulator::Schedule(params->duration, &UwbModulePhy::EndRx, this, params);
+		m_busy = Simulator::Schedule(params->duration, &UwbModulePhy::EndRx, this, params);
 	}
 
 	void UwbModulePhy::EndRx(Ptr<SpectrumSignalParameters> params)
 	{
 		NS_LOG_FUNCTION(this << params);
+
+		Ptr<UwbModuleSpectrumSignalParameters> uwbRxParams = DynamicCast<UwbModuleSpectrumSignalParameters>(params);
+
+		if (uwbRxParams == 0)
+		{
+			return;
+		}
+
+		Ptr < UwbModuleNetDevice > netDevice = DynamicCast<UwbModuleNetDevice>(m_netDevice);
+		netDevice->Receive(uwbRxParams->packetBurst->GetPackets().front(), Mac64Address());
 	}
 
 	void UwbModulePhy::StartTx(Ptr<UwbModuleSpectrumSignalParameters> params)
@@ -86,29 +104,31 @@ namespace ns3
 		
 		m_channel->StartTx(params);
 
-		Simulator::Schedule(params->duration, &UwbModulePhy::EndTx, this, params);
+		m_busy = Simulator::Schedule(params->duration, &UwbModulePhy::EndTx, this, params);
 	}
 
 	void UwbModulePhy::EndTx(Ptr<UwbModuleSpectrumSignalParameters> params)
 	{
-
+		NS_LOG_FUNCTION(this << params);
 	}
 
 	void UwbModulePhy::SetMobility(Ptr<MobilityModel> m)
 	{
-
+		NS_LOG_FUNCTION(this << m);
+		//(DynamicCast<UwbModuleNetDevice>(m_netDevice))->GetNode()->AggregateObject<Mobili
 	}
 
 
 	Ptr<MobilityModel> UwbModulePhy::GetMobility()
 	{
-		NS_LOG_FUNCTION(this);
+		NS_LOG_FUNCTION_NOARGS();
 		return (DynamicCast<UwbModuleNetDevice>(m_netDevice))->GetNode()->GetObject<MobilityModel>();
 	}
 
 
 	Ptr<const SpectrumModel> UwbModulePhy::GetRxSpectrumModel() const
 	{
+		NS_LOG_FUNCTION_NOARGS();
 		return NULL;
 	}
 
@@ -119,6 +139,7 @@ namespace ns3
 	*/
 	void UwbModulePhy::SetDevice(Ptr<NetDevice> d)
 	{
+		NS_LOG_FUNCTION(this << d);
 		m_netDevice = d;
 	}
 
@@ -129,6 +150,7 @@ namespace ns3
 	*/
 	Ptr<NetDevice> UwbModulePhy::GetDevice()
 	{
+		NS_LOG_FUNCTION_NOARGS();
 		return m_netDevice;
 	}
 }
