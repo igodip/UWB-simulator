@@ -27,16 +27,21 @@
 
 using namespace ns3;
 
+NS_LOG_COMPONENT_DEFINE("UwbModuleNdExample");
+
 int main(int argc, char ** argv)
 {
+	LogComponentEnable("UwbModuleNdExample",LOG_LEVEL_ALL);
 
 	//LogComponentEnable("UwbModuleNodeApp", LOG_LEVEL_INFO);
 	//LogComponentEnable("UwbModulePhy", LOG_LEVEL_INFO);
 
 	// Creating nodes
+	NS_LOG_INFO("Creating nodes");
 	NodeContainer nodeContainer;
 	nodeContainer.Create(25);
 
+	NS_LOG_INFO("Placing nodes");
 	MobilityHelper mobilityHelper;
 	mobilityHelper.SetMobilityModel("ns3::ConstantPositionMobilityModel");
 	mobilityHelper.SetPositionAllocator("ns3::GridPositionAllocator",
@@ -48,10 +53,12 @@ int main(int argc, char ** argv)
 		"LayoutType", StringValue("RowFirst"));
 	mobilityHelper.Install(nodeContainer);
 
+	NS_LOG_INFO("Installing node managers");
 	UwbModuleHelper uwbModuleHelper;
 	uwbModuleHelper.InstallNodes(nodeContainer);
 
 	//Running the simulation
+	NS_LOG_INFO("Running the simulation");
 	Simulator::Run();
 
 	for (uint32_t i = 0; i < nodeContainer.GetN(); ++i)

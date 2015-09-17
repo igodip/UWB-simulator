@@ -13,9 +13,9 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
-// DRAND
+#include "uwb-module-election-state.h"
 
-// Logica, stati, random variable 
-// Idle
-// Request
-// 
+namespace ns3
+{
+
+}
