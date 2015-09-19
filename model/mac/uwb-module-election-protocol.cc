@@ -12,3 +12,11 @@
 * along with this program; if not, write to the Free Software
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
+
+#include "uwb-module-election-protocol.h"
+#include <ns3/log.h>
+
+namespace ns3
+{
+	NS_LOG_COMPONENT_DEFINE("UwbModuleElectionProtocol");
+}

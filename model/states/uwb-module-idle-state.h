@@ -16,8 +16,39 @@
 #ifndef UWB_MODULE_IDLE_STATE_H
 #define UWB_MODULE_IDLE_STATE_H
 
+#include <ns3/uwb-module-drand-state.h>
+#include <ns3/event-id.h>
+#include <ns3/random-variable-stream.h>
+#include <ns3/nstime.h>
+
 namespace ns3
 {
+	
+	class UwbModuleIdleState : public UwbModuleAbstractState
+	{
+	public:
+
+		UwbModuleIdleState(Ptr<UwbModuleDrandState> state);
+
+		static TypeId GetTypeId();
+
+		virtual void Start();
+		virtual void Receive(Ptr<Packet> p);
+	
+	protected:
+		
+		void TryRequest();
+
+	private:
+
+		Ptr<UwbModuleDrandState> m_state;
+		EventId m_event;
+
+		Ptr<UniformRandomVariable> m_urv;
+
+		static Time m_waitTime;
+		static double m_threshold;
+	};
 
 }
 

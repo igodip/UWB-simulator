@@ -16,13 +16,30 @@
 #ifndef UWB_MODULE_REQUEST_STATE_H
 #define UWB_MODULE_REQUEST_STATE_H
 
-#include "uwb-module-abstract-state.h"
+#include <ns3/uwb-module-drand-state.h>
+#include <ns3/random-variable-stream.h>
+#include <ns3/event-id.h>
 
 namespace ns3
 {
 	class UwbModuleRequestState : public UwbModuleAbstractState
 	{
+	public:
+		
+		UwbModuleRequestState(Ptr<UwbModuleDrandState> state);
+		virtual ~UwbModuleRequestState();
 
+		static TypeId GetTypeId();
+
+		virtual void Start();
+		virtual void Receive(Ptr<Packet> p);
+
+	protected:
+		Ptr<UniformRandomVariable> m_rand;
+		Ptr<UwbModuleDrandState> m_drand;
+		EventId m_evt;
+
+		void SendRequest();
 	};
 }
 

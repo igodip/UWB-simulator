@@ -69,6 +69,7 @@ namespace ns3 {
 			
 			devs.Add(dev);
 			node->AddDevice(dev);
+			dev->SetNode(node);
 
 			//NetDevice::ReceiveCallback receiveCallback = MakeCallback<
 

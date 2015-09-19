@@ -25,6 +25,24 @@ namespace ns3
 {
 	NS_LOG_COMPONENT_DEFINE("UwbModuleNodeApp");
 
+	NS_OBJECT_ENSURE_REGISTERED(UwbModuleNodeApp);
+
+	TypeId UwbModuleNodeApp::GetTypeId()
+	{
+		static TypeId tid = TypeId("ns3::UwbModuleNodeApp")
+			.SetParent<UwbModuleManager>()
+			.AddAttribute("PingInterval", "The Ping Interval",
+			TimeValue(MilliSeconds(10.0)),
+			MakeTimeAccessor(&UwbModuleNodeApp::m_pingInterval),
+			MakeTimeChecker())
+			.AddAttribute("EndPhase", "Timeout for the endphase",
+			TimeValue(MilliSeconds(500.0)),
+			MakeTimeAccessor(&UwbModuleNodeApp::m_expNdPhase),
+			MakeTimeChecker());
+
+		return tid;
+	}
+
 	UwbModuleNodeApp::UwbModuleNodeApp(Ptr<UwbModuleNetDevice> netDevice)
 	{
 		NS_LOG_FUNCTION(this << netDevice);
@@ -51,7 +69,8 @@ namespace ns3
 
 		if (m_neighbors.size() > size)
 		{
-			m_endPhase = Simulator::Schedule(Seconds(5), &UwbModuleNodeApp::EndNdPhase, this);
+			m_endPhase.Cancel();
+			m_endPhase = Simulator::Schedule(m_expNdPhase, &UwbModuleNodeApp::EndNdPhase, this);
 			NS_LOG_INFO(this << " Vicino aggiunto " << size);
 		}
 		
@@ -64,10 +83,13 @@ namespace ns3
 
 		Ptr<UniformRandomVariable> urv = CreateObject<UniformRandomVariable>();
 		urv->SetAttribute("Min",DoubleValue(0.0));
-		urv->SetAttribute("Max",DoubleValue(1.0));		
+		urv->SetAttribute("Max",DoubleValue(1000.0));		
 
-		m_broadcastPhase = Simulator::Schedule(Seconds(urv->GetValue()), &UwbModuleNodeApp::BroadcastPingPacket, this);
-		m_endPhase = Simulator::Schedule(Seconds(5), &UwbModuleNodeApp::EndNdPhase, this);
+		Time startTime = urv->GetInteger()*m_pingInterval/1000.0;
+		NS_LOG_INFO("Start time" << startTime);
+
+		m_broadcastPhase = Simulator::Schedule(startTime, &UwbModuleNodeApp::BroadcastPingPacket, this);
+		m_endPhase = Simulator::Schedule(m_expNdPhase, &UwbModuleNodeApp::EndNdPhase, this);
 
 		//Attivo anche il timer di stop
 
@@ -99,7 +121,7 @@ namespace ns3
 		Ptr<Packet> p = m_ndProtocol.GeneratePingPacket(mac.ConvertFrom(m_netDevice->GetAddress()));
 		m_netDevice->Send(p,Mac64Address("FF:FF:FF:FF:FF:FF:FF:FF"),10);
 
-		m_broadcastPhase = Simulator::Schedule(MilliSeconds(200), &UwbModuleNodeApp::BroadcastPingPacket, this);
+		m_broadcastPhase = Simulator::Schedule(m_pingInterval, &UwbModuleNodeApp::BroadcastPingPacket, this);
 		
 	}
 

@@ -27,7 +27,9 @@ namespace ns3
 		UwbModuleNeighborDiscoveryState();
 		virtual ~UwbModuleNeighborDiscoveryState();
 
-		virtual void Run();
+		static TypeId GetTypeId();
+
+		virtual void Start();
 
 	protected:
 		

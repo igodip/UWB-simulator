@@ -34,6 +34,9 @@ namespace ns3
 	class UwbModulePhy : public SpectrumPhy
 	{
 	public:
+
+		static TypeId GetTypeId(void);
+
 		/**
 		* Set the mobility model associated with this device.
 		*
@@ -104,7 +107,10 @@ namespace ns3
 
 		void StartTx(Ptr<UwbModuleSpectrumSignalParameters> params);
 		void EndTx(Ptr<UwbModuleSpectrumSignalParameters> params);
+	protected:
 
+		virtual void DoDispose(void);
+		virtual void DoInitialize(void);
 		
 
 	private:

@@ -17,15 +17,18 @@
 #define UWB_MODULE_ABSTRACT_STATE_H
 
 #include <ns3/object.h>
+#include <ns3/packet.h>
 
 namespace ns3
 {
 	class UwbModuleAbstractState : public Object
 	{
-		virtual void StartTx();
-		virtual void StartRx();
-		virtual void EndTx();
-		virtual void EndRx();
+	public:
+
+		static TypeId GetTypeId();
+
+		virtual void Start() = 0;
+		virtual void Receive(Ptr<Packet> p) = 0;
 	};
 }
 

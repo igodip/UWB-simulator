@@ -14,8 +14,17 @@
 */
 
 #include "uwb-module-abstract-state.h"
+#include <ns3/log.h>
 
 namespace ns3
 {
+	NS_LOG_COMPONENT_DEFINE("UwbModuleAbstractState");
 
+	TypeId UwbModuleAbstractState::GetTypeId()
+	{
+		static TypeId tid = TypeId("ns3::UwbModuleAbstractState")
+			.SetParent<Object>();
+
+		return tid;
+	}
 }

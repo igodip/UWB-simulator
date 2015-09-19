@@ -12,3 +12,69 @@
 * along with this program; if not, write to the Free Software
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
+
+#include "uwb-module-idle-state.h"
+#include <ns3/log.h>
+#include <ns3/simulator.h>
+#include <ns3/random-variable-stream.h>
+#include <ns3/double.h>
+#include <ns3/uwb-module-request-state.h>
+
+namespace ns3
+{
+	NS_LOG_COMPONENT_DEFINE("UwbModuleIdleState");
+
+	Time UwbModuleIdleState::m_waitTime = MilliSeconds(10.0);
+	double UwbModuleIdleState::m_threshold = 0.7;
+
+	UwbModuleIdleState::UwbModuleIdleState(Ptr<UwbModuleDrandState> state)
+	{
+		NS_LOG_FUNCTION(this << state);
+
+		m_state = state;
+
+		m_urv = CreateObject<UniformRandomVariable>();
+		m_urv->SetAttribute("Min", DoubleValue(0.0));
+		m_urv->SetAttribute("Max", DoubleValue(1.0));
+
+	}
+
+	TypeId UwbModuleIdleState::GetTypeId()
+	{
+		static TypeId tid = TypeId("ns3::UwbModuleIdleState")
+			.SetParent<UwbModuleAbstractState>();
+
+		return tid;
+	}
+
+	void UwbModuleIdleState::Start()
+	{
+		NS_LOG_FUNCTION(this);
+
+		m_event = Simulator::Schedule(m_waitTime, &UwbModuleIdleState::TryRequest, this);
+
+
+	}
+
+	void UwbModuleIdleState::Receive(Ptr<Packet> p)
+	{
+		NS_LOG_FUNCTION(this);
+
+
+
+	}
+
+	void UwbModuleIdleState::TryRequest()
+	{
+		NS_LOG_FUNCTION(this);
+
+		if (m_urv->GetValue() <= m_threshold)
+		{
+			m_event = Simulator::Schedule(m_waitTime, &UwbModuleIdleState::TryRequest, this);
+			return;
+		}
+
+		m_state->SetState(CreateObject<UwbModuleRequestState>(m_state));
+
+	}
+}

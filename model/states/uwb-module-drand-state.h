@@ -16,13 +16,28 @@
 #ifndef UWB_MODULE_DRAND_STATE_H
 #define UWB_MODULE_DRAND_STATE_H
 
-#include "uwb-module-abstract-state.h"
+#include <ns3/uwb-module-abstract-state.h>
+#include <ns3/uwb-module-manager.h>
 
 namespace ns3
 {
 	class UwbModuleDrandState : public UwbModuleAbstractState
 	{
+	public:
 
+		UwbModuleDrandState(Ptr<UwbModuleManager> state);
+		~UwbModuleDrandState();
+
+		static TypeId GetTypeId();
+
+		virtual void Start();
+		virtual void Receive(Ptr<Packet> p) ;
+
+		void SetState(Ptr<UwbModuleAbstractState> state);
+		
+	protected:
+		Ptr<UwbModuleAbstractState> m_state;
+		Ptr<UwbModuleManager> m_manager;
 	};
 }
 

@@ -22,6 +22,8 @@
 #include <ns3/uwb-module-net-device.h>
 #include <ns3/log.h>
 #include <ns3/uwb-module-node-app.h>
+#include <ns3/uwb-module-phy-stat-helper.h>
+
 
 #include <iostream>
 
@@ -29,17 +31,39 @@ using namespace ns3;
 
 NS_LOG_COMPONENT_DEFINE("UwbModuleNdExample");
 
+uint32_t sent_p = 0, receiv_p = 0, dropped_p = 0;
+
+void collision(Ptr<const Packet> p)
+{
+	
+	++dropped_p ;
+}
+
+void received(Ptr<const Packet> p)
+{
+	++receiv_p;
+}
+
+void sent(Ptr<const Packet> p)
+{
+	++sent_p;
+}
+
 int main(int argc, char ** argv)
 {
 	LogComponentEnable("UwbModuleNdExample",LOG_LEVEL_ALL);
 
-	//LogComponentEnable("UwbModuleNodeApp", LOG_LEVEL_INFO);
-	//LogComponentEnable("UwbModulePhy", LOG_LEVEL_INFO);
+	//LogComponentEnable("UwbModulePhyStatHelper", LOG_LEVEL_ALL);
+	LogComponentEnable("UwbModuleNodeApp", LOG_LEVEL_INFO);
+
+	Config::SetDefault("ns3::UwbModuleNodeApp::PingInterval", TimeValue(MilliSeconds(50.0)));
+	Config::SetDefault("ns3::UwbModuleNodeApp::EndPhase", TimeValue(MilliSeconds(1000.0)));
 
 	// Creating nodes
 	NS_LOG_INFO("Creating nodes");
 	NodeContainer nodeContainer;
 	nodeContainer.Create(25);
+
 
 	NS_LOG_INFO("Placing nodes");
 	MobilityHelper mobilityHelper;
@@ -57,6 +81,14 @@ int main(int argc, char ** argv)
 	UwbModuleHelper uwbModuleHelper;
 	uwbModuleHelper.InstallNodes(nodeContainer);
 
+	UwbModulePhyStatHelper uwbModulePhyStatHelper;
+	uwbModulePhyStatHelper.attach();
+
+	Ptr<UwbModuleNetDevice> netDevice = DynamicCast<UwbModuleNetDevice>(nodeContainer.Get(12)->GetDevice(0));
+	netDevice->GetPhy()->TraceConnectWithoutContext("PhyRxDrop", MakeCallback(&collision));
+	netDevice->GetPhy()->TraceConnectWithoutContext("PhyRxEnd", MakeCallback(&received));
+	netDevice->GetPhy()->TraceConnectWithoutContext("PhyTxEnd", MakeCallback(&sent));
+
 	//Running the simulation
 	NS_LOG_INFO("Running the simulation");
 	Simulator::Run();
@@ -66,12 +98,28 @@ int main(int argc, char ** argv)
 		Ptr<Node> n = nodeContainer.Get(i);
 		Ptr<UwbModuleNetDevice> netDevice = DynamicCast<UwbModuleNetDevice>(n->GetDevice(0));
 		Ptr<UwbModuleNodeApp> nodeApp = DynamicCast<UwbModuleNodeApp>(netDevice->GetManager());
+		std::set<Mac64Address> addresses = nodeApp->GetNeighbors();
 
-		std::cout <<n->GetObject<MobilityModel>()->GetPosition()<<"  \t" <<nodeApp->GetNeighbors().size() << std::endl;
+		std::cout << n->GetId() << " ";
+		std::cout << n->GetObject<MobilityModel>()->GetPosition()<<"  \t" <<nodeApp->GetNeighbors().size() << std::endl;
 
+		std::set<Mac64Address>::iterator j = addresses.begin();
+
+		for (; j != addresses.end(); ++j)
+		{
+			//std::cout << *j << " ";
+		}
+
+		//std::cout << std::endl;
 	}
 
+
 	Simulator::Destroy();
+
+	std::cout << " Packets trasmitted: " << sent_p << std::endl;
+	std::cout << " Dropped packets due to collision: " << dropped_p << std::endl;
+	std::cout << " Packets received: " << receiv_p << std::endl;
+
 
 
 

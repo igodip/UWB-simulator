@@ -29,6 +29,8 @@ namespace ns3
 	{
 	public:
 
+		static TypeId GetTypeId();
+
 		UwbModuleNodeApp(Ptr<UwbModuleNetDevice> netDevice);
 		virtual ~UwbModuleNodeApp();
 
@@ -48,6 +50,9 @@ namespace ns3
 		Ptr<UwbModuleNetDevice> m_netDevice;
 		std::set<Mac64Address> m_neighbors;
 		UwbModuleNdProtocol m_ndProtocol;
+
+		Time m_expNdPhase;
+		Time m_pingInterval;
 
 	};
 }

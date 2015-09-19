@@ -23,6 +23,7 @@
 #include <ns3/isotropic-antenna-model.h>
 #include <ns3/packet.h>
 #include <ns3/spectrum-value.h>
+#include <ns3/pointer.h>
 
 namespace ns3
 {
@@ -56,8 +57,14 @@ namespace ns3
 	{
 		NS_LOG_FUNCTION_NOARGS();
 
-		static TypeId tid = TypeId("ns3::UwbModuleNetDevice").
-			AddConstructor<UwbModuleNetDevice>();
+		static TypeId tid = TypeId("ns3::UwbModuleNetDevice")
+			.SetParent<NetDevice>()
+			.AddConstructor<UwbModuleNetDevice>().
+			AddAttribute("Phy", "The PHY layer attached to this device.",
+			PointerValue(),
+			MakePointerAccessor(&UwbModuleNetDevice::GetPhy,
+			&UwbModuleNetDevice::SetPhy),
+			MakePointerChecker<UwbModulePhy>());
 
 		return tid;
 	}
@@ -244,17 +251,17 @@ namespace ns3
 		NS_LOG_FUNCTION(this);
 		return false;
 	}
+	
+	Ptr<UwbModulePhy> UwbModuleNetDevice::GetPhy() const
+	{
+		NS_LOG_FUNCTION(this);
+		return m_phy;
+	}
 
 	void UwbModuleNetDevice::SetPhy(Ptr<UwbModulePhy> phy)
 	{
 		NS_LOG_FUNCTION(this << phy);
 		m_phy = phy;
-	}
-	
-	Ptr<UwbModulePhy> UwbModuleNetDevice::GetPhy() const
-	{
-		NS_LOG_FUNCTION_NOARGS();
-		return m_phy;
 	}
 
 	void UwbModuleNetDevice::SetManager(Ptr<UwbModuleManager> manager)

@@ -21,7 +21,15 @@ namespace ns3
 	
 	NS_LOG_COMPONENT_DEFINE("UwbModuleNeighborDiscoveryState");
 
-	void UwbModuleNeighborDiscoveryState::Run()
+	TypeId UwbModuleNeighborDiscoveryState::GetTypeId()
+	{
+		static TypeId tid = TypeId("ns3::UwbModuleNeighborDiscoveryState")
+			.SetParent<UwbModuleAbstractState>();
+
+		return tid;
+	}
+
+	void UwbModuleNeighborDiscoveryState::Start()
 	{
 
 		//Send packets and listen for other packets

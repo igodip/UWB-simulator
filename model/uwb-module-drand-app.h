@@ -13,29 +13,30 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
-#include "uwb-module-election-state.h"
-#include <ns3/log.h>
+#ifndef UWB_MODULE_DRAND_APP_H
+#define UWB_MODULE_DRAND_APP_H
+
+#include "uwb-module-manager.h"
+#include "states/uwb-module-abstract-state.h"
 
 namespace ns3
 {
-
-	NS_LOG_COMPONENT_DEFINE("UwbModuleElectionState");
-
-	TypeId UwbModuleElectionState::GetTypeId()
+	class UwbModuleDrandApp : public UwbModuleManager
 	{
-		static TypeId tid = TypeId("ns3::UwbModuleElectionState")
-			.SetParent<UwbModuleAbstractState>();
+	public:
 
-		return tid;
-	}
+		UwbModuleDrandApp();
 
-	void UwbModuleElectionState::Start()
-	{
-		NS_LOG_FUNCTION(this);
-	}
+		virtual void Receive(Ptr<Packet> packet);
+		virtual void Start();
 
-	void UwbModuleElectionState::Receive(Ptr<Packet> p)
-	{
-		NS_LOG_FUNCTION(this);
-	}
+		void SetState(Ptr<UwbModuleAbstractState> state);
+
+	protected:
+
+	private:
+		Ptr<UwbModuleAbstractState> m_state;
+	};
 }
+
+#endif

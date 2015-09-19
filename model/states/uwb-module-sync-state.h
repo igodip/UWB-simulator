@@ -13,3 +13,17 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
+#ifndef UWB_MODULE_SYNC_STATE_H
+#define UWB_MODULE_SYNC_STATE_H
+
+#include "uwb-module-abstract-state.h"
+
+namespace ns3
+{
+	class UwbModuleSyncState : public UwbModuleAbstractState
+	{
+		static TypeId GetTypeId();
+	};
+}
+
+#endif

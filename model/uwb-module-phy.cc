@@ -28,6 +28,61 @@ namespace ns3
 
 	NS_OBJECT_ENSURE_REGISTERED(UwbModulePhy);
 
+	void UwbModulePhy::DoDispose(void)
+	{
+		NS_LOG_FUNCTION(this);
+	}
+
+	void UwbModulePhy::DoInitialize()
+	{
+		NS_LOG_FUNCTION(this);
+		//
+	}
+
+	TypeId UwbModulePhy::GetTypeId(void)
+	{
+
+		static TypeId tid = TypeId("ns3::UwbModulePhy")
+			.SetParent<SpectrumPhy>()
+			.AddConstructor<UwbModulePhy>().
+			AddTraceSource("PhyRxBegin",
+			"Trace source indicating a packet has begun"
+			"being received from the channel medium by the device",
+			MakeTraceSourceAccessor(&UwbModulePhy::m_phyRxBeginTrace),
+			"ns3::Packet::TracedCallback").
+			AddTraceSource("PhyRxEnd",
+			"Trace source indicating a packet has been "
+			"completely received from the channel medium"
+			"by the device",
+			MakeTraceSourceAccessor(&UwbModulePhy::m_phyRxEndTrace),
+			"ns3::Packet::TracedCallback").
+			AddTraceSource("PhyTxBegin",
+			"Trace source indicating a packet has begun "
+			"being sent to the channel medium"
+			"by the device",
+			MakeTraceSourceAccessor(&UwbModulePhy::m_phyTxBeginTrace),
+			"ns3::Packet::TracedCallback").
+			AddTraceSource("PhyTxEnd",
+			"Trace source indicating a packet has been"
+			"completely sent to the channel medium"
+			"by the device",
+			MakeTraceSourceAccessor(&UwbModulePhy::m_phyTxEndTrace),
+			"ns3::Packet::TracedCallback").
+			AddTraceSource("PhyTxDrop",
+			"Trace source indicating a packet has been"
+			"dropped by the device during transmission",
+			MakeTraceSourceAccessor(&UwbModulePhy::m_phyTxDropTrace),
+			"ns3::Packet::TracedCallback").
+			AddTraceSource("PhyRxDrop",
+			"Trace source indicating a packet has been"
+			"dropped by the device during reception",
+			MakeTraceSourceAccessor(&UwbModulePhy::m_phyRxDropTrace),
+			"ns3::Packet::TracedCallback");;
+
+		return tid;
+	}
+
+
 	void UwbModulePhy::SetChannel(Ptr<SpectrumChannel> c)
 	{
 		NS_LOG_FUNCTION(this << &c);
@@ -56,16 +111,6 @@ namespace ns3
 	{
 		NS_LOG_FUNCTION(this << params);
 
-		// If is busy receiving discard a packet
-		if (m_busy.IsRunning())
-		{
-			NS_LOG_INFO("Busy receiving another packet, packet discarded");
-			return;
-		}
-			
-
-		UwbModuleSpectrumSignalParameters psdHelper;
-
 		Ptr<UwbModuleSpectrumSignalParameters> uwbRxParams = DynamicCast<UwbModuleSpectrumSignalParameters>(params);
 
 		// It isn't an our packet
@@ -75,10 +120,19 @@ namespace ns3
 			return;
 		}
 
+		// If is busy receiving discard a packet
+		if (m_busy.IsRunning())
+		{
+			NS_LOG_INFO("Busy receiving another packet, packet discarded");
+			m_phyRxDropTrace(uwbRxParams->packetBurst->GetPackets().front());
+			return;
+		}
+			
+
+		UwbModuleSpectrumSignalParameters psdHelper;
+
 		Ptr<Packet> p = (uwbRxParams->packetBurst->GetPackets()).front();
 		m_phyRxBeginTrace(p);
-
-		Time duration;
 
 		m_busy = Simulator::Schedule(params->duration, &UwbModulePhy::EndRx, this, params);
 	}
@@ -88,11 +142,13 @@ namespace ns3
 		NS_LOG_FUNCTION(this << params);
 
 		Ptr<UwbModuleSpectrumSignalParameters> uwbRxParams = DynamicCast<UwbModuleSpectrumSignalParameters>(params);
-
+		
 		if (uwbRxParams == 0)
 		{
 			return;
 		}
+		Ptr<Packet> p = (uwbRxParams->packetBurst->GetPackets()).front();
+		m_phyRxEndTrace(p);
 
 		Ptr < UwbModuleNetDevice > netDevice = DynamicCast<UwbModuleNetDevice>(m_netDevice);
 		netDevice->Receive(uwbRxParams->packetBurst->GetPackets().front(), Mac64Address());
@@ -103,6 +159,8 @@ namespace ns3
 		NS_LOG_FUNCTION(this << params);
 		
 		m_channel->StartTx(params);
+		Ptr<Packet> p = (params->packetBurst->GetPackets()).front();
+		m_phyTxBeginTrace(p);
 
 		m_busy = Simulator::Schedule(params->duration, &UwbModulePhy::EndTx, this, params);
 	}
@@ -110,6 +168,8 @@ namespace ns3
 	void UwbModulePhy::EndTx(Ptr<UwbModuleSpectrumSignalParameters> params)
 	{
 		NS_LOG_FUNCTION(this << params);
+		Ptr<Packet> p = (params->packetBurst->GetPackets()).front();
+		m_phyTxEndTrace(p);
 	}
 
 	void UwbModulePhy::SetMobility(Ptr<MobilityModel> m)

@@ -24,6 +24,9 @@ namespace ns3
 	class UwbModuleManager : public Object
 	{
 	public:
+
+		static TypeId GetTypeId();
+
 		virtual void Receive(Ptr<Packet> packet) = 0;
 		virtual void Start() = 0;
 	};

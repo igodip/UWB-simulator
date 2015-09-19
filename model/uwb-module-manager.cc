@@ -20,4 +20,14 @@
 namespace ns3
 {
 	NS_LOG_COMPONENT_DEFINE("UwbModuleManager");
+
+	NS_OBJECT_ENSURE_REGISTERED(UwbModuleManager);
+
+	TypeId UwbModuleManager::GetTypeId()
+	{
+		static TypeId tid = TypeId("ns3::UwbModuleManager").
+			SetParent<Object>();
+
+		return tid;
+	}
 }

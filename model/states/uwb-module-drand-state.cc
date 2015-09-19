@@ -13,9 +13,53 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
-// DRAND
+#include "uwb-module-drand-state.h"
+#include "uwb-module-idle-state.h"
+#include <ns3/log.h>
 
-// Logica, stati, random variable 
-// Idle
-// Request
-// 
+namespace ns3
+{
+	NS_LOG_COMPONENT_DEFINE("UwbModuleDrandState");
+
+	TypeId UwbModuleDrandState::GetTypeId()
+	{
+		static TypeId tid = TypeId("ns3::UwbModuleDrandState")
+			.SetParent<UwbModuleAbstractState>();
+
+		return tid;
+	}
+
+	UwbModuleDrandState::UwbModuleDrandState(Ptr<UwbModuleManager> manager)
+	{
+		NS_LOG_FUNCTION(this);
+
+		m_state = CreateObject<UwbModuleIdleState>(this);
+		m_manager = manager;
+
+	}
+
+	UwbModuleDrandState::~UwbModuleDrandState()
+	{
+		NS_LOG_FUNCTION(this);
+		m_state->Dispose();
+	}
+
+	void  UwbModuleDrandState::Start()
+	{
+		NS_LOG_FUNCTION(this);
+		m_state->Start();
+	}
+
+	void UwbModuleDrandState::Receive(Ptr<Packet> p)
+	{
+		NS_LOG_FUNCTION(this);
+		m_state->Receive(p);
+	}
+
+	void UwbModuleDrandState::SetState(Ptr<UwbModuleAbstractState> state)
+	{
+		NS_LOG_FUNCTION(this << state);
+		m_state = state;
+	}
+
+}
