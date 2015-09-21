@@ -13,12 +13,12 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
-#include "ns3/core-module.h"
-#include "ns3/network-module.h"
-#include "ns3/applications-module.h"
-#include "ns3/mobility-module.h"
-#include "ns3/log.h"
-#include "ns3/lr-wpan-module.h"
+#include <ns3/core-module.h>
+#include <ns3/network-module.h>
+#include <ns3/applications-module.h>
+#include <ns3/mobility-module.h>
+#include <ns3/log.h>
+#include <ns3/lr-wpan-module.h>
 
 using namespace ns3;
 

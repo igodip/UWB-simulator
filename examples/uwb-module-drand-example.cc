@@ -31,17 +31,17 @@ int main(int argc, char** argv)
 
 	NS_LOG_INFO("Creating nodes");
 	NodeContainer nodeContainer;
-	nodeContainer.Create(50);
+	nodeContainer.Create(121);
 
 	NS_LOG_INFO("Placing nodes");
 	MobilityHelper mobilityHelper;
 	mobilityHelper.SetMobilityModel("ns3::ConstantPositionMobilityModel");
 	mobilityHelper.SetPositionAllocator("ns3::GridPositionAllocator",
-		"MinX", DoubleValue(-20.0),
-		"MinY", DoubleValue(-20.0),
+		"MinX", DoubleValue(-50.0),
+		"MinY", DoubleValue(-50.0),
 		"DeltaX", DoubleValue(10.0),
 		"DeltaY", DoubleValue(10.0),
-		"GridWidth", UintegerValue(5),
+		"GridWidth", UintegerValue(11),
 		"LayoutType", StringValue("RowFirst"));
 	
 	mobilityHelper.Install(nodeContainer);

@@ -59,14 +59,14 @@ int main(int argc, char ** argv)
 
 	// Creating nodes
 	
-	Config::SetDefault("ns3::UwbModuleNodeApp::PingInterval", TimeValue(MilliSeconds(5.0)));
+	Config::SetDefault("ns3::UwbModuleNodeApp::PingInterval", TimeValue(MilliSeconds(1.0)));
 	Config::SetDefault("ns3::UwbModuleNodeApp::EndPhase", TimeValue(MilliSeconds(300.0)));
 
 	//File 
 	std::ofstream myfile;
 	myfile.open("example.csv");
 	
-	uint32_t max_rounds = 20;
+	uint32_t max_rounds = 100;
 
 	for (uint32_t k = 1; k <= max_rounds; ++k)
 	{
@@ -146,7 +146,7 @@ int main(int argc, char ** argv)
 		std::cout << " Simulation ended at:" << Simulator::Now() << std::endl;
 
 
-		myfile << sent_p << "," << dropped_p << "," << receiv_p << Simulator::Now();
+		myfile << sent_p << "," << dropped_p << "," << receiv_p <<","<< Simulator::Now();
 		myfile << std::endl;
 		
 		Simulator::Destroy();
