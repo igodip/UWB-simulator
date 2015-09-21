@@ -20,6 +20,7 @@
 
 #include <ns3/uwb-module-net-device.h>
 #include <ns3/uwb-module-nd-protocol.h>
+#include <ns3/random-variable-stream.h>
 #include <ns3/event-id.h>
 #include <set>
 
@@ -50,6 +51,8 @@ namespace ns3
 		Ptr<UwbModuleNetDevice> m_netDevice;
 		std::set<Mac64Address> m_neighbors;
 		UwbModuleNdProtocol m_ndProtocol;
+		
+		Ptr<UniformRandomVariable> m_urv;
 
 		Time m_expNdPhase;
 		Time m_pingInterval;

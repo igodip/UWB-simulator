@@ -27,6 +27,7 @@ namespace ns3
 		NS_LOG_FUNCTION(this);
 
 		m_state = CreateObject<UwbModuleDrandState>(this);
+		//Uwb Module Drand State
 	}
 
 	void UwbModuleDrandApp::Receive(Ptr<Packet> packet)

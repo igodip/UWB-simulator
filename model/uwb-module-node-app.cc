@@ -47,6 +47,10 @@ namespace ns3
 	{
 		NS_LOG_FUNCTION(this << netDevice);
 		m_netDevice = netDevice;
+
+		m_urv = CreateObject<UniformRandomVariable>();
+		m_urv->SetAttribute("Min", DoubleValue(0.0));
+		m_urv->SetAttribute("Max", DoubleValue(1000.0));
 	}
 
 	UwbModuleNodeApp::~UwbModuleNodeApp()
@@ -71,7 +75,7 @@ namespace ns3
 		{
 			m_endPhase.Cancel();
 			m_endPhase = Simulator::Schedule(m_expNdPhase, &UwbModuleNodeApp::EndNdPhase, this);
-			NS_LOG_INFO(this << " Vicino aggiunto " << size);
+			//NS_LOG_INFO(this << " Vicino aggiunto " << size << " : " << Simulator::Now());
 		}
 		
 	}
@@ -81,11 +85,7 @@ namespace ns3
 		
 		NS_LOG_FUNCTION(this);
 
-		Ptr<UniformRandomVariable> urv = CreateObject<UniformRandomVariable>();
-		urv->SetAttribute("Min",DoubleValue(0.0));
-		urv->SetAttribute("Max",DoubleValue(1000.0));		
-
-		Time startTime = urv->GetInteger()*m_pingInterval/1000.0;
+		Time startTime = m_urv->GetInteger()*(m_pingInterval/1000.0);
 		NS_LOG_INFO("Start time" << startTime);
 
 		m_broadcastPhase = Simulator::Schedule(startTime, &UwbModuleNodeApp::BroadcastPingPacket, this);
@@ -106,6 +106,7 @@ namespace ns3
 		}
 
 		m_broadcastPhase.Cancel();
+		NS_LOG_INFO(this << "End Nd Phase" << Simulator::Now());
 
 		//Passo alla fase successiva
 
@@ -121,7 +122,10 @@ namespace ns3
 		Ptr<Packet> p = m_ndProtocol.GeneratePingPacket(mac.ConvertFrom(m_netDevice->GetAddress()));
 		m_netDevice->Send(p,Mac64Address("FF:FF:FF:FF:FF:FF:FF:FF"),10);
 
-		m_broadcastPhase = Simulator::Schedule(m_pingInterval, &UwbModuleNodeApp::BroadcastPingPacket, this);
+		Time offset = (m_urv->GetInteger())* (m_pingInterval / 1000.0);
+		NS_LOG_INFO("Next packet" << offset);
+
+		m_broadcastPhase = Simulator::Schedule(m_pingInterval+offset, &UwbModuleNodeApp::BroadcastPingPacket, this);
 		
 	}
 
