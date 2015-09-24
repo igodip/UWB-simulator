@@ -24,6 +24,9 @@ namespace ns3
 	{
 	public:
 
+		UwbModuleElectionState();
+		virtual ~UwbModuleElectionState();
+
 		static TypeId GetTypeId();
 
 		void Start();

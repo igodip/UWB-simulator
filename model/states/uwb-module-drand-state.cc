@@ -62,4 +62,10 @@ namespace ns3
 		m_state = state;
 	}
 
+	Ptr<UwbModuleAbstractState> UwbModuleDrandState::GetState() const
+	{
+		NS_LOG_FUNCTION(this);
+		return m_state;
+	}
+
 }

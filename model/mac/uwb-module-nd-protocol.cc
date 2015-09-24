@@ -31,6 +31,7 @@ namespace ns3
 
 	Ptr<Packet> UwbModuleNdProtocol::GeneratePingPacket(const Mac64Address & senderAddress)
 	{
+		NS_LOG_FUNCTION(this << senderAddress);
 		
 		static uint8_t buffer[8];
 		
@@ -42,6 +43,8 @@ namespace ns3
 
 	Mac64Address UwbModuleNdProtocol::GetSenderAddress(Ptr<const Packet> packet)
 	{
+		NS_LOG_FUNCTION(this << packet);
+
 		static uint8_t buffer[8];
 		packet->CopyData(buffer, 8);
 
@@ -53,6 +56,6 @@ namespace ns3
 
 	UwbModuleNdProtocol::~UwbModuleNdProtocol()
 	{
-		NS_LOG_FUNCTION_NOARGS();
+		NS_LOG_FUNCTION(this);
 	}
 }

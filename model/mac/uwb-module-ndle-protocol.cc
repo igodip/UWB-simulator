@@ -13,53 +13,66 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
-#include "uwb-module-election-protocol.h"
+#include "uwb-module-ndle-protocol.h"
 #include <ns3/log.h>
 
 namespace ns3
 {
-	NS_LOG_COMPONENT_DEFINE("UwbModuleElectionProtocol");
 
-	UwbModuleElectionProtocol::UwbModuleElectionProtocol()
+	NS_LOG_COMPONENT_DEFINE("UwbModuleNdleProtocol");
+
+	UwbModuleNdleProtocol::UwbModuleNdleProtocol()
+	{
+		NS_LOG_FUNCTION(this);
+	}
+
+	UwbModuleNdleProtocol::~UwbModuleNdleProtocol()
 	{
 		NS_LOG_FUNCTION(this);
 
-
 	}
 
-	UwbModuleElectionProtocol::~UwbModuleElectionProtocol()
+	Ptr<Packet> UwbModuleNdleProtocol::GeneratePingPacket(const Mac64Address & senderAddress, const Mac64Address & leaderMac)
 	{
 		NS_LOG_FUNCTION(this);
 
-	}
-
-	Ptr<Packet> UwbModuleElectionProtocol::GeneratePingPacket(const Mac64Address & senderAddress)
-	{
-
-		NS_LOG_FUNCTION(this << senderAddress);
-
-		static uint8_t buffer[8];
-
-		NS_LOG_INFO(senderAddress);
+		static uint8_t buffer[16];
 
 		senderAddress.CopyTo(buffer);
-		Ptr<Packet> packet = Create<Packet>(buffer, 8);
+		leaderMac.CopyTo(buffer + 8);
+
+		Ptr<Packet> packet = Create<Packet>(buffer, 16);
 
 		return packet;
 
 	}
 
-	Mac64Address UwbModuleElectionProtocol::GetAddress(Ptr<const Packet> packet)
+	Mac64Address UwbModuleNdleProtocol::GetSenderAddress(Ptr<const Packet> packet)
 	{
 		NS_LOG_FUNCTION(this << packet);
 
-		static uint8_t buffer[8];
-		packet->CopyData(buffer, 8);
+		static uint8_t buffer[16];
 
 		Mac64Address address;
+
+		packet->CopyData(buffer, 16);
 		address.CopyFrom(buffer);
 
 		return address;
 
+	}
+
+	Mac64Address UwbModuleNdleProtocol::GetLeaderAddress(Ptr<const Packet> packet)
+	{
+		NS_LOG_FUNCTION(this << packet);
+
+		static uint8_t buffer[16];
+
+		Mac64Address address;
+
+		packet->CopyData(buffer, 16);
+		address.CopyFrom(buffer + 8);
+
+		return address;
 	}
 }

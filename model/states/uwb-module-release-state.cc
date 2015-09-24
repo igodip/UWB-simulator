@@ -38,12 +38,15 @@ namespace ns3
 	{
 		NS_LOG_FUNCTION(this);
 
+		//Send release packet
 
 	}
 
 	void UwbModuleReleaseState::Receive(Ptr<Packet> p)
 	{
 		NS_LOG_FUNCTION(this << p);
+
+		// Wait for receive packets
 	}
 
 }

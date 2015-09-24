@@ -37,4 +37,14 @@ namespace ns3
 	{
 		NS_LOG_FUNCTION(this);
 	}
+
+	UwbModuleGrantState::UwbModuleGrantState()
+	{
+		NS_LOG_FUNCTION(this);
+	}
+
+	UwbModuleGrantState::~UwbModuleGrantState()
+	{
+		NS_LOG_FUNCTION(this);
+	}
 }

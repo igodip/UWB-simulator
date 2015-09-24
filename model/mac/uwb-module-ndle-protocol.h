@@ -13,32 +13,30 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
-#ifndef UWB_MODULE_DRAND_STATE_H
-#define UWB_MODULE_DRAND_STATE_H
 
-#include <ns3/uwb-module-abstract-state.h>
-#include <ns3/uwb-module-manager.h>
+#ifndef UWB_MODULE_NDLE_PROTOCOL_H
+#define UWB_MODULE_NDLE_PROTOCOL_H
+
+#include <ns3/trailer.h>
+#include <ns3/packet.h>
+#include <ns3/mac64-address.h>
+#include <ns3/uwb-module-net-device.h>
 
 namespace ns3
 {
-	class UwbModuleDrandState : public UwbModuleAbstractState
+	class UwbModuleNdleProtocol
 	{
 	public:
+		UwbModuleNdleProtocol();
+		virtual ~UwbModuleNdleProtocol();
 
-		UwbModuleDrandState(Ptr<UwbModuleManager> state);
-		~UwbModuleDrandState();
+		Ptr<Packet> GeneratePingPacket(const Mac64Address & senderAddress,const Mac64Address & leaderMac);
+		Mac64Address GetSenderAddress(Ptr<const Packet>);
+		Mac64Address GetLeaderAddress(Ptr<const Packet>);
 
-		static TypeId GetTypeId();
+	private:
 
-		virtual void Start();
-		virtual void Receive(Ptr<Packet> p) ;
 
-		void SetState(Ptr<UwbModuleAbstractState> state);
-		Ptr<UwbModuleAbstractState> GetState() const;
-		
-	protected:
-		Ptr<UwbModuleAbstractState> m_state;
-		Ptr<UwbModuleManager> m_manager;
 
 	};
 }

@@ -13,7 +13,20 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
+#include <ns3/uwb-module-drand-protocol.h>
+#include <ns3/log.h>
+
 namespace ns3
 {
+	NS_LOG_COMPONENT_DEFINE("UwbModuleDrandProtocol");
 
+	UwbModuleDrandProtocol::UwbModuleDrandProtocol()
+	{
+
+	}
+
+	UwbModuleDrandProtocol::~UwbModuleDrandProtocol()
+	{
+
+	}
 }

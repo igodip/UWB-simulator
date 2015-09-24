@@ -16,12 +16,21 @@
 #ifndef UWB_MODULE_DRAND_PROTOCOL_H
 #define UWB_MODULE_DRAND_PROTOCOL_H
 
+#include <ns3/packet.h>
 
 namespace ns3
 {
 	class UwbModuleDrandProtocol 
 	{
 	public:
+		UwbModuleDrandProtocol();
+		~UwbModuleDrandProtocol();
+
+		Ptr<Packet> GenerateRequest();
+		Ptr<Packet> GenerateGrant();
+		Ptr<Packet> GenerateRelease();
+		Ptr<Packet> GenerateReject();
+		Ptr<Packet> GenerateFail();
 
 	private:
 		

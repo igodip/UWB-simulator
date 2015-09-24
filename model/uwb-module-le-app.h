@@ -13,35 +13,52 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
-#ifndef UWB_MODULE_DRAND_STATE_H
-#define UWB_MODULE_DRAND_STATE_H
+#ifndef UWB_MODULE_LE_APP_H
+#define UWB_MODULE_LE_APP_H
 
-#include <ns3/uwb-module-abstract-state.h>
 #include <ns3/uwb-module-manager.h>
+#include <ns3/random-variable-stream.h>
+#include <ns3/event-id.h>
+#include <ns3/mac64-address.h>
+#include <ns3/uwb-module-election-protocol.h>
+#include <ns3/uwb-module-net-device.h>
 
 namespace ns3
 {
-	class UwbModuleDrandState : public UwbModuleAbstractState
+	class UwbModuleLeApp : public UwbModuleManager
 	{
 	public:
 
-		UwbModuleDrandState(Ptr<UwbModuleManager> state);
-		~UwbModuleDrandState();
-
 		static TypeId GetTypeId();
 
-		virtual void Start();
-		virtual void Receive(Ptr<Packet> p) ;
+		UwbModuleLeApp(Ptr<UwbModuleNetDevice> netDevice);
+		virtual ~UwbModuleLeApp();
 
-		void SetState(Ptr<UwbModuleAbstractState> state);
-		Ptr<UwbModuleAbstractState> GetState() const;
-		
+		virtual void Receive(Ptr<Packet> packet);
+		virtual void Start();
+
+		Mac64Address GetLeader() const;
+
 	protected:
-		Ptr<UwbModuleAbstractState> m_state;
-		Ptr<UwbModuleManager> m_manager;
+
+		void EndLePhase();
+		void BroadcastLePacket();
+
+		EventId m_endPhase;
+		EventId m_broadcastPhase;
+
+		Mac64Address m_leaderMac;
+
+		Ptr<UniformRandomVariable> m_urv;
+
+		UwbModuleElectionProtocol m_electionProtocol;
+		Ptr<NetDevice> m_netDevice;
+
+		Time m_pingInterval;
+		Time m_expLePhase;
+
 
 	};
 }
-
 
 #endif

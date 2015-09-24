@@ -59,7 +59,9 @@ namespace ns3
 	void UwbModuleIdleState::Receive(Ptr<Packet> p)
 	{
 		NS_LOG_FUNCTION(this);
-
+		
+		//Se ricevo un pacchetto
+		//Grant state o aggiorna il tuo stato
 
 
 	}
@@ -75,6 +77,7 @@ namespace ns3
 		}
 
 		m_state->SetState(CreateObject<UwbModuleRequestState>(m_state));
+		m_state->GetState()->Start();
 
 	}
 }

@@ -13,35 +13,12 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
-#ifndef UWB_MODULE_DRAND_STATE_H
-#define UWB_MODULE_DRAND_STATE_H
-
-#include <ns3/uwb-module-abstract-state.h>
-#include <ns3/uwb-module-manager.h>
+#include <ns3/uwb-module-rp-protocol.h>
+#include <ns3/log.h>
 
 namespace ns3
 {
-	class UwbModuleDrandState : public UwbModuleAbstractState
-	{
-	public:
+	NS_LOG_COMPONENT_DEFINE("UwbModuleRpProtocol");
 
-		UwbModuleDrandState(Ptr<UwbModuleManager> state);
-		~UwbModuleDrandState();
 
-		static TypeId GetTypeId();
-
-		virtual void Start();
-		virtual void Receive(Ptr<Packet> p) ;
-
-		void SetState(Ptr<UwbModuleAbstractState> state);
-		Ptr<UwbModuleAbstractState> GetState() const;
-		
-	protected:
-		Ptr<UwbModuleAbstractState> m_state;
-		Ptr<UwbModuleManager> m_manager;
-
-	};
 }
-
-
-#endif

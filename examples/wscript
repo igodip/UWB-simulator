@@ -12,3 +12,12 @@ def build(bld):
 
 	obj = bld.create_ns3_program('uwb-module-nd-example', ['uwb-module'])
 	obj.source = 'uwb-module-nd-example.cc'
+
+	obj = bld.create_ns3_program('uwb-module-le-example', ['uwb-module'])
+	obj.source = 'uwb-module-le-example.cc'
+
+	obj = bld.create_ns3_program('uwb-module-ndle-example', ['uwb-module'])
+	obj.source = 'uwb-module-ndle-example.cc'
+
+	obj = bld.create_ns3_program('uwb-module-drand-example',['uwb-module'])
+	obj.source = 'uwb-module-drand-example.cc'

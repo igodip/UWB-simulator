@@ -22,12 +22,13 @@ namespace ns3
 
 	NS_LOG_COMPONENT_DEFINE("UwbModuleDrandApp");
 
-	UwbModuleDrandApp::UwbModuleDrandApp()
+	UwbModuleDrandApp::UwbModuleDrandApp(Ptr<UwbModuleNetDevice> netDevice)
 	{
 		NS_LOG_FUNCTION(this);
 
 		m_state = CreateObject<UwbModuleDrandState>(this);
-		//Uwb Module Drand State
+		
+		m_netDevice = netDevice;
 	}
 
 	void UwbModuleDrandApp::Receive(Ptr<Packet> packet)
@@ -39,10 +40,16 @@ namespace ns3
 	void UwbModuleDrandApp::Start()
 	{
 		NS_LOG_FUNCTION(this);
+		m_state->Start();
 	}
 
 	void UwbModuleDrandApp::SetState(Ptr<UwbModuleAbstractState> state)
 	{
 		m_state = state;
+	}
+
+	Ptr<UwbModuleNetDevice> UwbModuleDrandApp::GetNetDevice() const
+	{
+		return m_netDevice;
 	}
 }

@@ -13,41 +13,35 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
-#include "uwb-module-neighbor-discovery-state.h"
+#include <ns3/uwb-module-ndle-app.h>
 #include <ns3/log.h>
-#include<ns3/nstime.h>
+#include <ns3/nstime.h>
 #include <ns3/double.h>
 #include <ns3/simulator.h>
 
-/**
-	Cambiare il 
-	Alla fine della fase passa la Drand
-*/
-
 namespace ns3
 {
-	
-	NS_LOG_COMPONENT_DEFINE("UwbModuleNeighborDiscoveryState");
+	NS_LOG_COMPONENT_DEFINE("UwbModuleNdleApp");
 
-	NS_OBJECT_ENSURE_REGISTERED(UwbModuleNeighborDiscoveryState);
+	NS_OBJECT_ENSURE_REGISTERED(UwbModuleNdleApp);
 
-	TypeId UwbModuleNeighborDiscoveryState::GetTypeId()
+	TypeId UwbModuleNdleApp::GetTypeId()
 	{
-		static TypeId tid = TypeId("ns3::UwbModuleNeighborDiscoveryState")
-			.SetParent<UwbModuleAbstractState>()
+		static TypeId tid = TypeId("ns3::UwbModuleNdleApp")
+			.SetParent<UwbModuleManager>()
 			.AddAttribute("PingInterval", "The Ping Interval",
 			TimeValue(MilliSeconds(10.0)),
-			MakeTimeAccessor(&UwbModuleNeighborDiscoveryState::m_pingInterval),
+			MakeTimeAccessor(&UwbModuleNdleApp::m_pingInterval),
 			MakeTimeChecker())
 			.AddAttribute("EndPhase", "Timeout for the endphase",
 			TimeValue(MilliSeconds(500.0)),
-			MakeTimeAccessor(&UwbModuleNeighborDiscoveryState::m_expPhase),
+			MakeTimeAccessor(&UwbModuleNdleApp::m_expPhase),
 			MakeTimeChecker());
 
 		return tid;
 	}
 
-	UwbModuleNeighborDiscoveryState::UwbModuleNeighborDiscoveryState(Ptr<UwbModuleNetDevice> netDevice)
+	UwbModuleNdleApp::UwbModuleNdleApp(Ptr<UwbModuleNetDevice> netDevice)
 	{
 		NS_LOG_FUNCTION(this);
 
@@ -60,15 +54,13 @@ namespace ns3
 		m_leaderMac = Mac64Address::ConvertFrom(netDevice->GetAddress());
 	}
 
-	UwbModuleNeighborDiscoveryState::~UwbModuleNeighborDiscoveryState()
+	UwbModuleNdleApp::~UwbModuleNdleApp()
 	{
 		NS_LOG_FUNCTION(this);
 
-
-
 	}
 
-	void UwbModuleNeighborDiscoveryState::Receive(Ptr<Packet> packet)
+	void UwbModuleNdleApp::Receive(Ptr<Packet> packet)
 	{
 		NS_LOG_FUNCTION(this);
 
@@ -79,13 +71,13 @@ namespace ns3
 		m_neighbors.insert(received);
 
 		bool changed = false;
-
+		
 
 		if (m_leaderMac < mac)
 		{
 			changed = true;
 			m_leaderMac = mac;
-
+			
 		}
 
 		if (size != m_neighbors.size())
@@ -96,36 +88,36 @@ namespace ns3
 		if (changed == true)
 		{
 			m_endPhase.Cancel();
-			m_endPhase = Simulator::Schedule(m_expPhase, &UwbModuleNeighborDiscoveryState::EndPhase, this);
+			m_endPhase = Simulator::Schedule(m_expPhase, &UwbModuleNdleApp::EndPhase, this);
 		}
 
 	}
 
-	void UwbModuleNeighborDiscoveryState::Start()
+	void UwbModuleNdleApp::Start()
 	{
 		NS_LOG_FUNCTION(this);
 		Time startTime = m_urv->GetInteger()*(m_pingInterval / 1000.0);
 		NS_LOG_INFO("Start time" << startTime);
 
-		m_pingPhase = Simulator::Schedule(startTime, &UwbModuleNeighborDiscoveryState::PingPacket, this);
-		m_endPhase = Simulator::Schedule(m_expPhase, &UwbModuleNeighborDiscoveryState::EndPhase, this);
+		m_pingPhase = Simulator::Schedule(startTime, &UwbModuleNdleApp::PingPacket, this);
+		m_endPhase = Simulator::Schedule(m_expPhase, &UwbModuleNdleApp::EndPhase, this);
 	}
 
-	const std::set<Mac64Address> & UwbModuleNeighborDiscoveryState::GetNeighbors() const
+	const std::set<Mac64Address> & UwbModuleNdleApp::GetNeighbors() const
 	{
 		NS_LOG_FUNCTION(this);
 
 		return m_neighbors;
 	}
 
-	Mac64Address UwbModuleNeighborDiscoveryState::GetLeader() const
+	Mac64Address UwbModuleNdleApp::GetLeader() const
 	{
 		NS_LOG_FUNCTION(this);
 
 		return m_leaderMac;
 	}
 
-	void UwbModuleNeighborDiscoveryState::EndPhase()
+	void UwbModuleNdleApp::EndPhase()
 	{
 		NS_LOG_FUNCTION(this);
 
@@ -138,19 +130,19 @@ namespace ns3
 		NS_LOG_INFO(this << "End Le Phase" << Simulator::Now());
 	}
 
-	void UwbModuleNeighborDiscoveryState::PingPacket()
+	void UwbModuleNdleApp::PingPacket()
 	{
 
 		NS_LOG_FUNCTION(this);
 		Mac64Address mac;
 
-		Ptr<Packet> p = m_ndleProtocol.GeneratePingPacket(mac.ConvertFrom(m_netDevice->GetAddress()), m_leaderMac);
+		Ptr<Packet> p = m_ndleProtocol.GeneratePingPacket(mac.ConvertFrom(m_netDevice->GetAddress()),m_leaderMac);
 		m_netDevice->Send(p, Mac64Address("FF:FF:FF:FF:FF:FF:FF:FF"), 10);
 
 		Time offset = (m_urv->GetInteger())* (m_pingInterval / 1000.0);
 		NS_LOG_INFO("Next packet" << offset);
 
-		m_pingPhase = Simulator::Schedule(m_pingInterval + offset, &UwbModuleNeighborDiscoveryState::PingPacket, this);
+		m_pingPhase = Simulator::Schedule(m_pingInterval + offset, &UwbModuleNdleApp::PingPacket, this);
 	}
 
 

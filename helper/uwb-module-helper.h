@@ -22,6 +22,8 @@
 
 namespace ns3 {
 
+	
+
 	class UwbModuleHelper
 	{
 	public:
@@ -33,7 +35,16 @@ namespace ns3 {
 		NetDeviceContainer InstallNodes(NodeContainer c);
 		/**
 		*/
+		NetDeviceContainer InstallLeNodes(NodeContainer c);
+		/**
+		*/
+		NetDeviceContainer InstallNdleNodes(NodeContainer c);
+		/**
+		*/
 		NetDeviceContainer InstallTargets(NodeContainer c);
+		/**
+		*/
+		NetDeviceContainer InstallDrandNodes(NodeContainer c);
 		/**
 		*/
 		int64_t AssignStreams(NetDeviceContainer c, int64_t stream);

@@ -25,6 +25,8 @@ namespace ns3
 
 	TypeId UwbModuleRequestState::GetTypeId()
 	{
+		NS_LOG_FUNCTION_NOARGS();
+
 		static TypeId tid = TypeId("ns3::UwbModuleReleaseState")
 			.SetParent<UwbModuleAbstractState>();
 

@@ -13,35 +13,49 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
-#ifndef UWB_MODULE_DRAND_STATE_H
-#define UWB_MODULE_DRAND_STATE_H
+#ifndef UWB_MODULE_NDLE_APP
+#define UWB_MODULE_NDLE_APP
 
-#include <ns3/uwb-module-abstract-state.h>
 #include <ns3/uwb-module-manager.h>
+#include <ns3/uwb-module-ndle-protocol.h>
+#include <ns3/random-variable-stream.h>
 
 namespace ns3
 {
-	class UwbModuleDrandState : public UwbModuleAbstractState
+	class UwbModuleNdleApp : public UwbModuleManager
 	{
 	public:
 
-		UwbModuleDrandState(Ptr<UwbModuleManager> state);
-		~UwbModuleDrandState();
-
 		static TypeId GetTypeId();
 
-		virtual void Start();
-		virtual void Receive(Ptr<Packet> p) ;
+		UwbModuleNdleApp(Ptr<UwbModuleNetDevice> netDevice);
+		virtual ~UwbModuleNdleApp();
 
-		void SetState(Ptr<UwbModuleAbstractState> state);
-		Ptr<UwbModuleAbstractState> GetState() const;
-		
+		virtual void Receive(Ptr<Packet> packet);
+		virtual void Start();
+
+		const std::set<Mac64Address> & GetNeighbors() const;
+		Mac64Address GetLeader() const;
+
 	protected:
-		Ptr<UwbModuleAbstractState> m_state;
-		Ptr<UwbModuleManager> m_manager;
+
+		void EndPhase();
+		void PingPacket();
+
+		EventId m_endPhase;
+		EventId m_pingPhase;
+
+		Ptr<UwbModuleNetDevice> m_netDevice;
+		std::set<Mac64Address> m_neighbors;
+		Mac64Address m_leaderMac;
+		UwbModuleNdleProtocol m_ndleProtocol;
+
+		Ptr<UniformRandomVariable> m_urv;
+
+		Time m_expPhase;
+		Time m_pingInterval;
 
 	};
 }
-
 
 #endif

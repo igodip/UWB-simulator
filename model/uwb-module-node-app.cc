@@ -55,7 +55,7 @@ namespace ns3
 
 	UwbModuleNodeApp::~UwbModuleNodeApp()
 	{
-		NS_LOG_FUNCTION_NOARGS();
+		NS_LOG_FUNCTION(this);
 	}
 
 	void UwbModuleNodeApp::Receive(Ptr<Packet> packet)

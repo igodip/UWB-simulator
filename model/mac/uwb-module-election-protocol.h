@@ -16,11 +16,21 @@
 #ifndef UWB_MODULE_ELECTION_PROTOCOL_H
 #define UWB_MODULE_ELECTION_PROTOCOL_H
 
+#include <ns3/packet.h>
+#include <ns3/mac64-address.h>
+
 namespace ns3
 {
 	class UwbModuleElectionProtocol
 	{
+	public:
+		UwbModuleElectionProtocol();
+		virtual ~UwbModuleElectionProtocol();
 
+		Ptr<Packet> GeneratePingPacket(const Mac64Address & senderAddress);
+		Mac64Address GetAddress(Ptr<const Packet>);
+
+	private:
 	};
 }
 

@@ -23,7 +23,9 @@
 #include <ns3/propagation-delay-model.h>
 #include <ns3/double.h>
 #include <ns3/uwb-module-node-app.h>
-
+#include <ns3/uwb-module-le-app.h>
+#include <ns3/uwb-module-ndle-app.h>
+#include <ns3/uwb-module-drand-app.h>
 /**
 Ghassemzadeh, Saeed S., et al. "A statistical path loss model for in-home UWB channels."
 Ultra Wideband Systems and Technologies, 2002. 
@@ -83,6 +85,39 @@ namespace ns3 {
 		return devs;
 	}
 
+
+	NetDeviceContainer UwbModuleHelper::InstallLeNodes(NodeContainer c)
+	{
+		NS_LOG_FUNCTION(this);
+
+		NetDeviceContainer devs;
+
+		for (uint32_t i = 0; i < c.GetN(); ++i)
+		{
+
+			Ptr<Node> node = c.Get(i);
+			NS_LOG_LOGIC("Installing node netDevice on node " << node->GetId());
+
+			Ptr<UwbModuleNetDevice> dev = Create<UwbModuleNetDevice>();
+			Ptr<UwbModuleLeApp> nodeApp = CreateObject<UwbModuleLeApp>(dev);
+
+			devs.Add(dev);
+			node->AddDevice(dev);
+			dev->SetNode(node);
+
+			//NetDevice::ReceiveCallback receiveCallback = MakeCallback<
+
+			dev->SetChannel(m_channel);
+			dev->SetManager(nodeApp);
+
+			nodeApp->Start();
+
+		}
+
+		return devs;
+	}
+
+
 	NetDeviceContainer UwbModuleHelper::InstallTargets(NodeContainer c)
 	{
 		NS_LOG_FUNCTION(this);
@@ -101,6 +136,71 @@ namespace ns3 {
 			node->AddDevice(dev);
 			dev->SetChannel(m_channel);
 
+
+		}
+
+		return devs;
+	}
+
+	NetDeviceContainer UwbModuleHelper::InstallNdleNodes(NodeContainer c)
+	{
+		NS_LOG_FUNCTION(this);
+
+		NetDeviceContainer devs;
+
+
+		for (uint32_t i = 0; i < c.GetN(); ++i)
+		{
+
+			Ptr<Node> node = c.Get(i);
+			NS_LOG_LOGIC("Installing node netDevice on node " << node->GetId());
+
+			Ptr<UwbModuleNetDevice> dev = Create<UwbModuleNetDevice>();
+			Ptr<UwbModuleNdleApp> nodeApp = CreateObject<UwbModuleNdleApp>(dev);
+
+			devs.Add(dev);
+			node->AddDevice(dev);
+			dev->SetNode(node);
+
+			//NetDevice::ReceiveCallback receiveCallback = MakeCallback<
+
+			dev->SetChannel(m_channel);
+			dev->SetManager(nodeApp);
+
+			nodeApp->Start();
+
+		}
+
+		return devs;
+	}
+
+
+	NetDeviceContainer UwbModuleHelper::InstallDrandNodes(NodeContainer c)
+	{
+		NS_LOG_FUNCTION(this);
+
+		NetDeviceContainer devs;
+
+
+		for (uint32_t i = 0; i < c.GetN(); ++i)
+		{
+
+			Ptr<Node> node = c.Get(i);
+			NS_LOG_LOGIC("Installing node netDevice on node " << node->GetId());
+
+			Ptr<UwbModuleNetDevice> dev = Create<UwbModuleNetDevice>();
+			Ptr<UwbModuleDrandApp> nodeApp = CreateObject<UwbModuleDrandApp>(dev);
+
+			devs.Add(dev);
+			node->AddDevice(dev);
+			dev->SetNode(node);
+
+			//NetDevice::ReceiveCallback receiveCallback = MakeCallback<
+
+			dev->SetChannel(m_channel);
+			dev->SetManager(nodeApp);
+
+			nodeApp->Start();
 
 		}
 

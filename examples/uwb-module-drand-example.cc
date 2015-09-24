@@ -20,6 +20,7 @@
 #include <ns3/double.h>
 #include <ns3/uinteger.h>
 #include <ns3/simulator.h>
+#include <ns3/uwb-module-helper.h>
 
 using namespace ns3;
 
@@ -28,10 +29,14 @@ NS_LOG_COMPONENT_DEFINE("UwbModuleDrandExample");
 int main(int argc, char** argv)
 {
 	LogComponentEnable("UwbModuleDrandExample", LOG_LEVEL_ALL);
+	LogComponentEnable("UwbModuleDrandApp", LOG_LEVEL_ALL);
+	LogComponentEnable("UwbModuleIdleState", LOG_LEVEL_ALL);
+	LogComponentEnable("UwbModuleDrandState", LOG_LEVEL_ALL);
+	LogComponentEnable("UwbModuleRequestState", LOG_LEVEL_ALL);
 
 	NS_LOG_INFO("Creating nodes");
 	NodeContainer nodeContainer;
-	nodeContainer.Create(121);
+	nodeContainer.Create(2);
 
 	NS_LOG_INFO("Placing nodes");
 	MobilityHelper mobilityHelper;
@@ -45,6 +50,10 @@ int main(int argc, char** argv)
 		"LayoutType", StringValue("RowFirst"));
 	
 	mobilityHelper.Install(nodeContainer);
+
+	NS_LOG_INFO("Install drand on nodes");
+	UwbModuleHelper uwbModuleHelper;
+	uwbModuleHelper.InstallDrandNodes(nodeContainer);
 
 	NS_LOG_INFO("Running the simulation");
 	Simulator::Run();

@@ -17,6 +17,7 @@
 #define UWB_MODULE_TARGET_APP_H
 
 #include "uwb-module-manager.h"
+#include <ns3/uwb-module-abstract-state.h>
 
 
 namespace ns3
@@ -30,7 +31,7 @@ namespace ns3
 
 	protected:
 
-
+		Ptr<UwbModuleAbstractState>  m_state;
 
 	};
 }

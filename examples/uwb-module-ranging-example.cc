@@ -18,7 +18,6 @@
 #include <ns3/applications-module.h>
 #include <ns3/mobility-module.h>
 #include <ns3/log.h>
-#include <ns3/lr-wpan-module.h>
 
 using namespace ns3;
 

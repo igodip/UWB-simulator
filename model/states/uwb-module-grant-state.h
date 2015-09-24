@@ -24,6 +24,9 @@ namespace ns3
 	{
 	public:
 
+		UwbModuleGrantState();
+		virtual ~UwbModuleGrantState();
+
 		static TypeId GetTypeId();
 
 		virtual void Start();

@@ -21,6 +21,16 @@ namespace ns3
 
 	NS_LOG_COMPONENT_DEFINE("UwbModuleElectionState");
 
+	UwbModuleElectionState::UwbModuleElectionState()
+	{
+		NS_LOG_FUNCTION(this);
+	}
+
+	UwbModuleElectionState::~UwbModuleElectionState()
+	{
+		NS_LOG_FUNCTION(this);
+	}
+
 	TypeId UwbModuleElectionState::GetTypeId()
 	{
 		static TypeId tid = TypeId("ns3::UwbModuleElectionState")

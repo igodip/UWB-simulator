@@ -17,6 +17,13 @@
 #define UWB_MODULE_NEIGHBOR_DISCOVERY_STATE_H
 
 #include "uwb-module-abstract-state.h"
+#include <ns3/nstime.h>
+#include <ns3/uwb-module-net-device.h>
+#include <ns3/random-variable-stream.h>
+#include <ns3/mac64-address.h>
+#include <ns3/uwb-module-ndle-protocol.h>
+
+#include <set>
 
 namespace ns3
 {
@@ -24,15 +31,37 @@ namespace ns3
 	{
 	public:
 
-		UwbModuleNeighborDiscoveryState();
+		UwbModuleNeighborDiscoveryState(Ptr<UwbModuleNetDevice> state);
 		virtual ~UwbModuleNeighborDiscoveryState();
 
 		static TypeId GetTypeId();
 
 		virtual void Start();
+		virtual void Receive(Ptr<Packet> p);
+
+		const std::set<Mac64Address> & GetNeighbors() const;
+		Mac64Address GetLeader() const;
 
 	protected:
-		
+
+		void EndPhase();
+		void PingPacket();
+
+		Time m_pingInterval;
+		Time m_expPhase;
+
+		Ptr < UwbModuleNetDevice> m_netDevice;
+		Ptr < UniformRandomVariable > m_urv;
+
+		Mac64Address m_leaderMac;
+
+		std::set<Mac64Address> m_neighbors;
+
+		UwbModuleNdleProtocol m_ndleProtocol;
+
+		EventId m_endPhase;
+		EventId m_pingPhase;
+
 	};
 }
 

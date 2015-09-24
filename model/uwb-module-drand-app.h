@@ -17,7 +17,8 @@
 #define UWB_MODULE_DRAND_APP_H
 
 #include "uwb-module-manager.h"
-#include "states/uwb-module-abstract-state.h"
+#include <ns3/uwb-module-abstract-state.h>
+#include <ns3/uwb-module-net-device.h>
 
 namespace ns3
 {
@@ -25,17 +26,21 @@ namespace ns3
 	{
 	public:
 
-		UwbModuleDrandApp();
+		UwbModuleDrandApp(Ptr<UwbModuleNetDevice> netDevice);
 
 		virtual void Receive(Ptr<Packet> packet);
 		virtual void Start();
 
 		void SetState(Ptr<UwbModuleAbstractState> state);
+		Ptr<UwbModuleNetDevice> GetNetDevice() const;
 
 	protected:
 
 	private:
+
 		Ptr<UwbModuleAbstractState> m_state;
+		Ptr<UwbModuleNetDevice> m_netDevice;
+
 	};
 }
 
