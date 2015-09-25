@@ -26,7 +26,7 @@ namespace ns3
 		static TypeId tid = TypeId("ns3::UwbModuleDrandState")
 			.SetParent<UwbModuleAbstractState>();
 
-		m_
+			//m_
 
 			return tid;
 	}
