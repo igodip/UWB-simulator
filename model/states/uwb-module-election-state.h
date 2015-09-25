@@ -31,7 +31,9 @@ namespace ns3
 
 		void Start();
 		void Receive(Ptr<Packet> p);
+
 	private:
+
 	};
 }
 

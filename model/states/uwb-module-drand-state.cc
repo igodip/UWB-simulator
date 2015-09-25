@@ -26,7 +26,9 @@ namespace ns3
 		static TypeId tid = TypeId("ns3::UwbModuleDrandState")
 			.SetParent<UwbModuleAbstractState>();
 
-		return tid;
+		m_
+
+			return tid;
 	}
 
 	UwbModuleDrandState::UwbModuleDrandState(Ptr<UwbModuleManager> manager)
@@ -71,6 +73,27 @@ namespace ns3
 	void UwbModuleDrandState::SetNeighbors(const std::set<Mac64Address> addresses)
 	{
 		m_addresses = addresses;
+	}
+
+	const std::set<Mac64Address> & UwbModuleDrandState::GetNeighbors() const
+	{
+		return m_addresses;
+	}
+
+
+	const std::map<uint32_t, Mac64Address> UwbModuleDrandState::getTurns() const
+	{
+		return m_turns;
+	}
+
+	void UwbModuleDrandState::setTurn(uint32_t turn, Mac64Address address)
+	{
+		//m_turns.insert(turn, address);
+	}
+
+	uint32_t UwbModuleDrandState::getFirstTurn() const
+	{
+		return m_firstTurn;
 	}
 
 }

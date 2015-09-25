@@ -22,6 +22,7 @@
 
 
 #include <set>
+#include <map>
 
 namespace ns3
 {
@@ -41,6 +42,12 @@ namespace ns3
 		Ptr<UwbModuleAbstractState> GetState() const;
 
 		void SetNeighbors(const std::set<Mac64Address> addresses);
+		const std::set<Mac64Address> & GetNeighbors() const;
+
+		const std::map<uint32_t, Mac64Address> getTurns() const;
+		void setTurn(uint32_t turn, Mac64Address address);
+
+		uint32_t getFirstTurn() const;
 
 	protected:
 
@@ -48,6 +55,9 @@ namespace ns3
 		Ptr<UwbModuleManager> m_manager;
 
 		std::set<Mac64Address> m_addresses;
+		std::map<uint32_t,Mac64Address> m_turns;
+
+		uint32_t m_firstTurn;
 
 	};
 }
