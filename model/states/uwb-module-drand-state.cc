@@ -68,4 +68,9 @@ namespace ns3
 		return m_state;
 	}
 
+	void UwbModuleDrandState::SetNeighbors(const std::set<Mac64Address> addresses)
+	{
+		m_addresses = addresses;
+	}
+
 }

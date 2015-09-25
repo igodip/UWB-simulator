@@ -18,6 +18,10 @@
 
 #include <ns3/uwb-module-abstract-state.h>
 #include <ns3/uwb-module-manager.h>
+#include <ns3/mac64-address.h>
+
+
+#include <set>
 
 namespace ns3
 {
@@ -31,14 +35,19 @@ namespace ns3
 		static TypeId GetTypeId();
 
 		virtual void Start();
-		virtual void Receive(Ptr<Packet> p) ;
+		virtual void Receive(Ptr<Packet> p);
 
 		void SetState(Ptr<UwbModuleAbstractState> state);
 		Ptr<UwbModuleAbstractState> GetState() const;
-		
+
+		void SetNeighbors(const std::set<Mac64Address> addresses);
+
 	protected:
+
 		Ptr<UwbModuleAbstractState> m_state;
 		Ptr<UwbModuleManager> m_manager;
+
+		std::set<Mac64Address> m_addresses;
 
 	};
 }

@@ -22,6 +22,7 @@
 #include <ns3/random-variable-stream.h>
 #include <ns3/mac64-address.h>
 #include <ns3/uwb-module-ndle-protocol.h>
+#include <ns3/uwb-module-drand-app.h>
 
 #include <set>
 
@@ -31,7 +32,7 @@ namespace ns3
 	{
 	public:
 
-		UwbModuleNeighborDiscoveryState(Ptr<UwbModuleNetDevice> state);
+		UwbModuleNeighborDiscoveryState(Ptr<UwbModuleManager> state);
 		virtual ~UwbModuleNeighborDiscoveryState();
 
 		static TypeId GetTypeId();
@@ -52,6 +53,7 @@ namespace ns3
 
 		Ptr < UwbModuleNetDevice> m_netDevice;
 		Ptr < UniformRandomVariable > m_urv;
+		Ptr < UwbModuleDrandApp> m_app;
 
 		Mac64Address m_leaderMac;
 

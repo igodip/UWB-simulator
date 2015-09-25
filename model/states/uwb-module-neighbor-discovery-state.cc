@@ -18,9 +18,11 @@
 #include<ns3/nstime.h>
 #include <ns3/double.h>
 #include <ns3/simulator.h>
+#include <ns3/uwb-module-drand-app.h>
+#include <ns3/uwb-module-drand-state.h>
 
 /**
-	Cambiare il 
+	Cambiare la fase finale
 	Alla fine della fase passa la Drand
 */
 
@@ -47,17 +49,19 @@ namespace ns3
 		return tid;
 	}
 
-	UwbModuleNeighborDiscoveryState::UwbModuleNeighborDiscoveryState(Ptr<UwbModuleNetDevice> netDevice)
+	UwbModuleNeighborDiscoveryState::UwbModuleNeighborDiscoveryState(Ptr<UwbModuleManager> manager)
 	{
 		NS_LOG_FUNCTION(this);
 
-		m_netDevice = netDevice;
+		Ptr<UwbModuleDrandApp> app = DynamicCast<UwbModuleDrandApp>(manager);
 
 		m_urv = CreateObject<UniformRandomVariable>();
 		m_urv->SetAttribute("Min", DoubleValue(0.0));
 		m_urv->SetAttribute("Max", DoubleValue(1000.0));
 
-		m_leaderMac = Mac64Address::ConvertFrom(netDevice->GetAddress());
+		m_leaderMac = Mac64Address::ConvertFrom(app->GetNetDevice()->GetAddress());
+		m_netDevice = app->GetNetDevice();
+		m_app = app;
 	}
 
 	UwbModuleNeighborDiscoveryState::~UwbModuleNeighborDiscoveryState()
@@ -135,7 +139,14 @@ namespace ns3
 		}
 
 		m_pingPhase.Cancel();
-		NS_LOG_INFO(this << "End Le Phase" << Simulator::Now());
+		
+		NS_LOG_INFO(this << "End Nd/Le Phase" << Simulator::Now());
+		Ptr<UwbModuleDrandState> new_state = CreateObject<UwbModuleDrandState>(m_app);
+		new_state->SetNeighbors(m_neighbors);
+		m_app->SetState(new_state);
+		
+		m_app->Start();
+
 	}
 
 	void UwbModuleNeighborDiscoveryState::PingPacket()

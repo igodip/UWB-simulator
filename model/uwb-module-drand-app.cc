@@ -14,7 +14,7 @@
 */
 
 #include "uwb-module-drand-app.h"
-#include "states/uwb-module-drand-state.h"
+#include "states/uwb-module-neighbor-discovery-state.h"
 #include <ns3/log.h>
 
 namespace ns3
@@ -22,13 +22,23 @@ namespace ns3
 
 	NS_LOG_COMPONENT_DEFINE("UwbModuleDrandApp");
 
+	NS_OBJECT_ENSURE_REGISTERED(UwbModuleDrandApp);
+
+	TypeId UwbModuleDrandApp::GetTypeId()
+	{
+		static TypeId tid = TypeId("ns3::UwbModuleDrandApp")
+			.SetParent<UwbModuleManager>();
+
+		return tid;
+	}
+
 	UwbModuleDrandApp::UwbModuleDrandApp(Ptr<UwbModuleNetDevice> netDevice)
 	{
 		NS_LOG_FUNCTION(this);
 
-		m_state = CreateObject<UwbModuleDrandState>(this);
-		
 		m_netDevice = netDevice;
+		m_state = CreateObject<UwbModuleNeighborDiscoveryState>(this);
+
 	}
 
 	void UwbModuleDrandApp::Receive(Ptr<Packet> packet)

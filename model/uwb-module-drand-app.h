@@ -28,6 +28,8 @@ namespace ns3
 
 		UwbModuleDrandApp(Ptr<UwbModuleNetDevice> netDevice);
 
+		static TypeId GetTypeId();
+
 		virtual void Receive(Ptr<Packet> packet);
 		virtual void Start();
 

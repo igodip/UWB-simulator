@@ -19,6 +19,7 @@
 namespace ns3
 {
 	NS_LOG_COMPONENT_DEFINE("UwbModuleReleaseState");
+
 	UwbModuleReleaseState::UwbModuleReleaseState(Ptr<UwbModuleDrandState> state)
 	{
 		NS_LOG_FUNCTION(this << state);

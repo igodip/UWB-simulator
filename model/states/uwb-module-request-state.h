@@ -20,6 +20,8 @@
 #include <ns3/random-variable-stream.h>
 #include <ns3/event-id.h>
 
+#include <set>
+
 namespace ns3
 {
 	class UwbModuleRequestState : public UwbModuleAbstractState

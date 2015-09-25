@@ -17,6 +17,7 @@
 #include <ns3/double.h>
 #include <ns3/log.h>
 #include <ns3/simulator.h>
+#include <ns3/uwb-module-drand-app.h>
 
 
 namespace ns3
@@ -38,11 +39,16 @@ namespace ns3
 	{
 		NS_LOG_FUNCTION(this);
 
+		//Mando la richiesta
+		SendRequest();
+
 	}
 
 	void UwbModuleRequestState::Receive(Ptr<Packet> p)
 	{
 		NS_LOG_FUNCTION(this << p);
+
+
 
 	}
 
@@ -70,7 +76,7 @@ namespace ns3
 	{
 		NS_LOG_FUNCTION(this);
 
-
+		Ptr<UwbModuleDrandApp> app = DynamicCast<UwbModuleDrandApp>(m_drand);
 
 	}
 
