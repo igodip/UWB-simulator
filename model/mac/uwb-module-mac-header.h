@@ -17,11 +17,32 @@
 #define UWB_MODULE_MAC_HEADER_H
 
 #include <ns3/header.h>
+#include <ns3/mac64-address.h>
 
 namespace ns3
 {
 	class UwbModuleMacHeader : public Header
 	{
+	public:
+
+		static TypeId GetTypeId(void);
+		virtual ~UwbModuleMacHeader();
+
+		void SetSenderEuid(const Mac64Address & euid);
+		void SetReceiverEuid(const Mac64Address & euid);
+
+		Mac64Address GetSenderEuid() const;
+		Mac64Address GetReceiverEuid() const;
+
+		virtual void Serialize(Buffer::Iterator start) const ;
+		virtual uint32_t GetSerializedSize(void) const;
+		virtual uint32_t Deserialize(Buffer::Iterator start);
+		virtual void Print(std::ostream &os) const;
+
+	protected:
+
+		Mac64Address m_senderEuid;
+		Mac64Address m_receiverEuid;
 
 	};
 }

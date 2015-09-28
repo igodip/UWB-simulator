@@ -14,8 +14,92 @@
 */
 
 #include "uwb-module-mac-header.h"
+#include <ns3/log.h>
+#include <ns3/address-utils.h>
 
 namespace ns3
 {
+
+	NS_LOG_COMPONENT_DEFINE("UwbModuleMacHeader");
+
+	NS_OBJECT_ENSURE_REGISTERED(UwbModuleMacHeader);
+
+	void UwbModuleMacHeader::SetSenderEuid(const Mac64Address & euid)
+	{
+		NS_LOG_FUNCTION(this << euid);
+		m_senderEuid = euid;
+	}
+
+	void UwbModuleMacHeader::SetReceiverEuid(const Mac64Address & euid)
+	{
+		NS_LOG_FUNCTION(this << euid);
+		m_receiverEuid = euid;
+	}
+
+	Mac64Address UwbModuleMacHeader::GetSenderEuid() const
+	{
+		NS_LOG_FUNCTION(this);
+		return m_senderEuid;
+	}
+
+	Mac64Address UwbModuleMacHeader::GetReceiverEuid() const
+	{
+		NS_LOG_FUNCTION(this);
+		return m_receiverEuid;
+	}
+
+	TypeId UwbModuleMacHeader::GetTypeId(void)
+	{
+		NS_LOG_FUNCTION_NOARGS();
+
+		TypeId tid = TypeId("ns3::UwbModuleMacHeader")
+			.SetParent<Header>();
+
+		return tid;
+	}
+
+	UwbModuleMacHeader::~UwbModuleMacHeader()
+	{
+		NS_LOG_FUNCTION(this);
+	}
+
+	void UwbModuleMacHeader::Serialize(Buffer::Iterator start) const
+	{
+		NS_LOG_FUNCTION(this);
+
+		Buffer::Iterator i = start;
+		
+		WriteTo(i, GetSenderEuid());
+		WriteTo(i, GetReceiverEuid());
+	}
+
+	uint32_t UwbModuleMacHeader::GetSerializedSize(void) const
+	{
+		NS_LOG_FUNCTION(this);
+		return sizeof(Mac64Address) * 2;
+	}
+
+	uint32_t UwbModuleMacHeader::Deserialize(Buffer::Iterator start)
+	{
+		NS_LOG_FUNCTION(this);
+
+		Buffer::Iterator i = start;
+
+		Address receiver, sender;
+
+		ReadFrom(i, receiver, 8);
+		ReadFrom(i, sender, 8);
+
+		SetReceiverEuid(Mac64Address::ConvertFrom(receiver));
+		SetSenderEuid(Mac64Address::ConvertFrom(sender));
+
+		return i.GetDistanceFrom(start);
+		//return 0;
+	}
+
+	void UwbModuleMacHeader::Print(std::ostream &os) const
+	{
+		NS_LOG_FUNCTION(this);
+	}
 
 }

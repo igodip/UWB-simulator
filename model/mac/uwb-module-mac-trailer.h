@@ -23,6 +23,23 @@ namespace ns3
 	class UwbModuleMacTrailer : public Trailer
 	{
 
+	public:
+
+
+		UwbModuleMacTrailer();
+		virtual ~UwbModuleMacTrailer();
+
+		static TypeId GetTypeId(void);
+
+		virtual void Serialize(Buffer::Iterator start) const;
+		virtual uint32_t GetSerializedSize(void) const;
+		virtual uint32_t Deserialize(Buffer::Iterator start);
+		virtual void Print(std::ostream &os) const;
+
+	protected:
+
+
+
 	};
 }
 

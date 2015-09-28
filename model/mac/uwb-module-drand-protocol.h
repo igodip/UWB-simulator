@@ -17,6 +17,9 @@
 #define UWB_MODULE_DRAND_PROTOCOL_H
 
 #include <ns3/packet.h>
+#include <ns3/mac64-address.h>
+
+#include <map>
 
 namespace ns3
 {
@@ -26,9 +29,11 @@ namespace ns3
 		UwbModuleDrandProtocol();
 		~UwbModuleDrandProtocol();
 
+		
+
 		Ptr<Packet> GenerateRequest();
-		Ptr<Packet> GenerateGrant();
-		Ptr<Packet> GenerateRelease();
+		Ptr<Packet> GenerateGrant(const std::map<uint32_t, Mac64Address>  & turns);
+		Ptr<Packet> GenerateRelease(uint32_t turn, Mac64Address owner);
 		Ptr<Packet> GenerateReject();
 		Ptr<Packet> GenerateFail();
 

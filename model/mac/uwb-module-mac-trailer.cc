@@ -14,9 +14,53 @@
 */
 
 #include "uwb-module-mac-trailer.h"
+#include <ns3/log.h>
 
 namespace ns3
 {
+	NS_LOG_COMPONENT_DEFINE("UwbModuleMacTrailer");
 
+	UwbModuleMacTrailer::UwbModuleMacTrailer()
+	{
+		NS_LOG_FUNCTION(this);
+	}
+
+	UwbModuleMacTrailer::~UwbModuleMacTrailer()
+	{
+		NS_LOG_FUNCTION(this);
+	}
+
+
+
+	TypeId UwbModuleMacTrailer::GetTypeId(void)
+	{
+		NS_LOG_FUNCTION_NOARGS();
+		TypeId tid = TypeId("ns3::UwbModuleMacTrailer")
+			.SetParent<Trailer>();
+
+		return tid;
+	}
+
+	void UwbModuleMacTrailer::Serialize(Buffer::Iterator start) const
+	{
+		NS_LOG_FUNCTION(this);
+	}
+
+	uint32_t UwbModuleMacTrailer::GetSerializedSize(void) const
+	{
+		NS_LOG_FUNCTION(this);
+		return 0;
+	}
+
+	uint32_t UwbModuleMacTrailer::Deserialize(Buffer::Iterator start)
+	{
+		NS_LOG_FUNCTION(this);
+		return 0;
+	}
+
+	void UwbModuleMacTrailer::Print(std::ostream &os) const
+	{
+		NS_LOG_FUNCTION(this);
+	}
 }
 
