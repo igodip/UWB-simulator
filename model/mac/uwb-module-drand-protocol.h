@@ -40,7 +40,8 @@ namespace ns3
 	enum UwbModuleDrandReleaseType
 	{
 		UWB_MODULE_DRAND_ONE_HOP_RELEASE,
-		UWB_MODULE_DRAND_TWO_HOP_RELEASE
+		UWB_MODULE_DRAND_TWO_HOP_RELEASE,
+		UWB_MODULE_DRAND_NO_RELEASE
 	};
 
 	class UwbModuleDrandProtocol 
@@ -57,13 +58,13 @@ namespace ns3
 		Ptr<Packet> GenerateFail(const Mac64Address & sender);
 
 		UwbModuleDrandPacketType GetPacketType(Ptr< Packet> p);
+		UwbModuleDrandReleaseType GetDrandReleaseType(Ptr<Packet> p);
 
 		void ParseRequest(Ptr<const Packet> p, Mac64Address & sender);
 		void ParseGrant(Ptr<const Packet> p, std::map<uint32_t, Mac64Address> & turns);
 		void ParseRelease(Ptr<const Packet> p, Mac64Address & sender);
 		void ParseReject(Ptr<const Packet> p, Mac64Address & sender);
 		void ParseFail(Ptr<const Packet> p, Mac64Address & sender);
-		//void ParseRelease(Ptr<const Packet> p,)
 
 	protected:
 		UwbModuleDrandProtocol();

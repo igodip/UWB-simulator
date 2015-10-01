@@ -18,6 +18,7 @@
 #include <ns3/uwb-module-drand-app.h>
 #include <ns3/uwb-module-drand-protocol.h>
 #include <ns3/uwb-module-mac-header.h>
+#include <ns3/simulator.h>
 
 namespace ns3
 {
@@ -39,7 +40,7 @@ namespace ns3
 	{
 		NS_LOG_FUNCTION(this);
 
-		m_timeout = Simulator::Schedule(m_waitTime, &UwbModuleGrantState::Timeout(), this);
+		m_timeout = Simulator::Schedule(m_waitTime,&UwbModuleGrantState::)
 	}
 
 	void UwbModuleGrantState::Receive(Ptr<Packet> p)
@@ -108,8 +109,6 @@ namespace ns3
 	{
 		NS_LOG_FUNCTION(this << p);
 
-		NS_LOG_FUNCTION(this << p);
-
 		Ptr<UwbModuleDrandApp> app = DynamicCast<UwbModuleDrandApp>(m_drand->GetManager());
 
 		Address address = app->GetNetDevice()->GetAddress();
@@ -126,6 +125,7 @@ namespace ns3
 
 	void UwbModuleGrantState::Timeout()
 	{
+		NS_LOG_FUNCTION(this);
 
 	}
 }

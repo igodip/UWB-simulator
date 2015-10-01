@@ -38,7 +38,7 @@ namespace ns3
 
 	protected:
 
-
+		uint16_t m_fcs;
 
 	};
 }

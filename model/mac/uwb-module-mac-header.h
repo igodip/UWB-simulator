@@ -19,6 +19,11 @@
 #include <ns3/header.h>
 #include <ns3/mac64-address.h>
 
+// DEFAULT ADDRESS SETTINGS //
+#define DEFAULT_PAN_ID 0xDECA
+
+// BLINK MESSAGE //
+#define LOCATION_BLINK_FC	0xC5
 namespace ns3
 {
 	class UwbModuleMacHeader : public Header
@@ -42,8 +47,13 @@ namespace ns3
 
 	protected:
 
+		uint8_t frameCtrl[2] = { DATA_FC0, DATA_FC1 };
+		uint8_t seqNumber;
+		uint16_t panId;
+
 		Mac64Address m_senderEuid;
 		Mac64Address m_receiverEuid;
+
 
 	};
 }

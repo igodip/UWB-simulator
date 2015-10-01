@@ -21,11 +21,6 @@
 #include <ns3/uwb-module-drand-app.h>
 #include <ns3/uwb-module-drand-state.h>
 
-/**
-	Cambiare la fase finale
-	Alla fine della fase passa la Drand
-*/
-
 namespace ns3
 {
 	

@@ -87,12 +87,14 @@ namespace ns3
 
 	void UwbModuleIdleState::Request(Ptr<const Packet> p)
 	{
-		NS_LOG_FUNCTION(this);
+		NS_LOG_FUNCTION(this << p);
 
-		Ptr<UwbModuleAbsDrandState> state = CreateObject<UwbModuleGrantState>(m_state);
+		Ptr<UwbModuleGrantState> state = CreateObject<UwbModuleGrantState>(m_state);
 
 		m_state->SetState(state);
 		m_state->GetState()->Start();
+
+		state->SendGrant(p);
 		
 	}
 
@@ -100,7 +102,8 @@ namespace ns3
 	{
 		NS_LOG_FUNCTION(this);
 
-		//Check if it's one hop release or two release.
+		
+		
 
 	}
 }

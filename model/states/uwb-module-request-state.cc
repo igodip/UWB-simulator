@@ -122,9 +122,6 @@ namespace ns3
 	{
 		NS_LOG_FUNCTION(this);
 
-		//Grant
-
-		//Reset Time out every
 
 	}
 
@@ -155,6 +152,24 @@ namespace ns3
 		app->GetNetDevice()->Send(packet, Mac64Address("FF:FF:FF:FF:FF:FF:FF:FF"), 17);
 
 	}
+
+	void UwbModuleRequestState::SendReject(Ptr<const Packet> p)
+	{
+		NS_LOG_FUNCTION(this << p);
+
+		Ptr<UwbModuleDrandApp> app = DynamicCast<UwbModuleDrandApp>(m_drand->GetManager());
+
+		Address address = app->GetNetDevice()->GetAddress();
+		Mac64Address srcAddress = Mac64Address::ConvertFrom(address);
+
+		UwbModuleMacHeader macHeader;
+		p->PeekHeader(macHeader);
+
+		Ptr<Packet> packet = UwbModuleDrandProtocol::Get().GenerateReject(srcAddress,);
+
+		app->GetNetDevice()->Send(packet, Mac64Address("FF:FF:FF:FF:FF:FF:FF:FF"), 17);
+	}
+
 
 
 }

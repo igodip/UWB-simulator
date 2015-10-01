@@ -15,6 +15,7 @@
 
 #include "uwb-module-release-state.h"
 #include <ns3/log.h>
+#include <ns3/uwb-module-grant-state.h>
 
 namespace ns3
 {
@@ -55,6 +56,13 @@ namespace ns3
 	void UwbModuleReleaseState::Request(Ptr<Packet> p)
 	{
 		NS_LOG_FUNCTION(this << p);
+
+		Ptr<UwbModuleAbsDrandState> state = CreateObject<UwbModuleGrantState>(m_state);
+
+		m_state->SetState(state);
+		m_state->GetState()->Start();
+
+
 	}
 	
 	void UwbModuleReleaseState::Release(Ptr<Packet> p)

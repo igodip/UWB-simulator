@@ -50,6 +50,7 @@ namespace ns3
 
 		void SendRequest();
 		void SendFail();
+		void SendReject(Ptr<const Packet> p);
 
 		std::set<Mac64Address> answers;
 

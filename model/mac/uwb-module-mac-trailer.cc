@@ -15,6 +15,7 @@
 
 #include "uwb-module-mac-trailer.h"
 #include <ns3/log.h>
+#include <ns3/address-utils.h>
 
 namespace ns3
 {
@@ -44,23 +45,33 @@ namespace ns3
 	void UwbModuleMacTrailer::Serialize(Buffer::Iterator start) const
 	{
 		NS_LOG_FUNCTION(this);
+
+		start.WriteU16(m_fcs);
+		
 	}
 
 	uint32_t UwbModuleMacTrailer::GetSerializedSize(void) const
 	{
 		NS_LOG_FUNCTION(this);
-		return 0;
+		return 2;
 	}
 
 	uint32_t UwbModuleMacTrailer::Deserialize(Buffer::Iterator start)
 	{
 		NS_LOG_FUNCTION(this);
-		return 0;
+
+		Buffer::Iterator i = start;
+
+		m_fcs = i.ReadU16();
+
+		return i.GetDistanceFrom(start);
 	}
 
 	void UwbModuleMacTrailer::Print(std::ostream &os) const
 	{
 		NS_LOG_FUNCTION(this);
 	}
+
+
 }
 

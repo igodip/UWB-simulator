@@ -129,6 +129,8 @@ namespace ns3
 		return packet;
 	}
 
+
+
 	UwbModuleDrandPacketType UwbModuleDrandProtocol::GetPacketType(Ptr< Packet> p)
 	{
 		NS_LOG_FUNCTION(this);
@@ -180,7 +182,6 @@ namespace ns3
 			break;
 
 
-
 		}
 
 		return result;
@@ -193,6 +194,23 @@ namespace ns3
 		static UwbModuleDrandProtocol protocol;
 
 		return protocol;
+	}
+
+	UwbModuleDrandReleaseType UwbModuleDrandProtocol::GetReleaseType(Ptr<Packet> p)
+	{
+		NS_LOG_FUNCTION(this << p);
+
+		static uint8_t buffer[2];
+		UwbModuleMacHeader macHeader;
+
+		p->RemoveHeader(macHeader);
+
+		uint32_t packetSize = p->GetSize();
+
+		p->CopyData(buffer, 2);
+
+		p->AddHeader(macHeader);
+
 	}
 
 }

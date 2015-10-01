@@ -130,7 +130,7 @@ namespace ns3
 	{
 		NS_LOG_FUNCTION(this);
 
-		//m_turns.insert(turn, address);
+		m_turns[turn] = address;
 	}
 
 	Ptr<UwbModuleManager> UwbModuleDrandState::GetManager() const

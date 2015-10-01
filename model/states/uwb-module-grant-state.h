@@ -41,16 +41,20 @@ namespace ns3
 		virtual void Release(Ptr<const Packet> p);
 		virtual void Reject(Ptr<const Packet> p);
 
+		void SendGrant(Ptr<const Packet> p);
+
 	protected:
 
 		Ptr<UwbModuleDrandState> m_drand;
 
 		void Timeout();
-		void SendGrant(Ptr<const Packet> p);
+		
 		void SendReject(Ptr<const Packet> p);
 
+		std::set<Mac64Address> m_answers;
+
 		EventId m_timeout;
-		Time m_waitTime;
+		static Time m_waitTime;
 
 	};
 }
