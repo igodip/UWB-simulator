@@ -147,4 +147,16 @@ namespace ns3
 		m_manager = manager;
 	}
 
+	uint32_t UwbModuleDrandState::GetTurn() const
+	{
+		NS_LOG_FUNCTION(this);
+
+		return 0;
+	}
+
+	void UwbModuleDrandState::SetTurn(uint32_t turn)
+	{
+		NS_LOG_FUNCTION(this << turn);
+	}
+
 }

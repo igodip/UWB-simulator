@@ -50,6 +50,9 @@ namespace ns3
 		Ptr<UwbModuleManager> GetManager() const;
 		void SetManager(Ptr<UwbModuleManager> manager);
 
+		uint32_t GetTurn() const;
+		void SetTurn(uint32_t turn);
+
 	protected:
 
 		Ptr<UwbModuleAbsDrandState> m_state;
@@ -57,6 +60,8 @@ namespace ns3
 
 		std::set<Mac64Address> m_addresses;
 		std::map<uint32_t,Mac64Address> m_turns;
+
+		uint32_t m_myTurn;
 
 	};
 }

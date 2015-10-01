@@ -127,5 +127,7 @@ namespace ns3
 	{
 		NS_LOG_FUNCTION(this);
 
+		//SendReject();
+
 	}
 }
