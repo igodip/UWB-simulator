@@ -13,54 +13,52 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
-#include "uwb-module-mac-trailer.h"
+#include "uwb-module-abs-drand-state.h"
 #include <ns3/log.h>
 
 namespace ns3
 {
-	NS_LOG_COMPONENT_DEFINE("UwbModuleMacTrailer");
 
-	UwbModuleMacTrailer::UwbModuleMacTrailer()
+	NS_LOG_COMPONENT_DEFINE("UwbModuleAbsDrandState");
+
+	NS_OBJECT_ENSURE_REGISTERED(UwbModuleAbsDrandState);
+
+	TypeId UwbModuleAbsDrandState::GetTypeId()
 	{
-		NS_LOG_FUNCTION(this);
-	}
-
-	UwbModuleMacTrailer::~UwbModuleMacTrailer()
-	{
-		NS_LOG_FUNCTION(this);
-	}
-
-
-
-	TypeId UwbModuleMacTrailer::GetTypeId(void)
-	{
-		NS_LOG_FUNCTION_NOARGS();
-		static TypeId tid = TypeId("ns3::UwbModuleMacTrailer")
-			.SetParent<Trailer>();
+		static TypeId tid = TypeId("ns3::UwbModuleAbsDrandState")
+			.SetParent <UwbModuleAbstractState> ();
 
 		return tid;
 	}
 
-	void UwbModuleMacTrailer::Serialize(Buffer::Iterator start) const
+	void UwbModuleAbsDrandState::Grant(Ptr<const Packet> p)
 	{
 		NS_LOG_FUNCTION(this);
+
 	}
 
-	uint32_t UwbModuleMacTrailer::GetSerializedSize(void) const
+	void UwbModuleAbsDrandState::Fail(Ptr<const Packet> p)
 	{
 		NS_LOG_FUNCTION(this);
-		return 0;
+
 	}
 
-	uint32_t UwbModuleMacTrailer::Deserialize(Buffer::Iterator start)
+	void UwbModuleAbsDrandState::Request(Ptr<const Packet> p)
 	{
 		NS_LOG_FUNCTION(this);
-		return 0;
+
 	}
 
-	void UwbModuleMacTrailer::Print(std::ostream &os) const
+	void UwbModuleAbsDrandState::Release(Ptr<const Packet> p)
 	{
 		NS_LOG_FUNCTION(this);
+
 	}
+
+	void UwbModuleAbsDrandState::Reject(Ptr<const Packet> p)
+	{
+		NS_LOG_FUNCTION(this);
+
+	}
+
 }
-

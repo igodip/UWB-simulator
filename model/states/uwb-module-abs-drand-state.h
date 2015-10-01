@@ -13,45 +13,24 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
-#ifndef UWB_MODULE_GRANT_STATE_H
-#define UWB_MODULE_GRANT_STATE_H
+#ifndef UWB_MODULE_ABS_DRAND_STATE_H
+#define UWB_MODULE_ABS_DRAND_STATE_H
 
-#include "uwb-module-abs-drand-state.h"
-#include <ns3/uwb-module-drand-state.h>
-#include <ns3/event-id.h>
-#include <ns3/nstime.h>
+#include "uwb-module-abstract-state.h"
 
 namespace ns3
 {
-	class UwbModuleGrantState : public UwbModuleAbsDrandState
+	class UwbModuleAbsDrandState : public UwbModuleAbstractState
 	{
 	public:
 
-		UwbModuleGrantState(Ptr<UwbModuleDrandState> state);
-		virtual ~UwbModuleGrantState();
-
 		static TypeId GetTypeId();
 
-		virtual void Start();
-		virtual void Receive(Ptr<Packet> p);
-
 		virtual void Grant(Ptr<const Packet> p);
-		virtual void Fail(Ptr<const Packet> p);
+		virtual void Fail(Ptr<const Packet> p) ;
 		virtual void Request(Ptr<const Packet> p);
 		virtual void Release(Ptr<const Packet> p);
-		virtual void Reject(Ptr<const Packet> p);
-
-	protected:
-
-		Ptr<UwbModuleDrandState> m_drand;
-
-		void Timeout();
-		void SendGrant(Ptr<const Packet> p);
-		void SendReject(Ptr<const Packet> p);
-
-		EventId m_timeout;
-		Time m_waitTime;
-
+		virtual void Reject(Ptr<const Packet> p) ;
 	};
 }
 

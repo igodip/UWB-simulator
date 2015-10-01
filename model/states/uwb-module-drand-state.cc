@@ -16,17 +16,18 @@
 #include "uwb-module-drand-state.h"
 #include "uwb-module-idle-state.h"
 #include <ns3/log.h>
+#include <ns3/uwb-module-drand-protocol.h>
 
 namespace ns3
 {
 	NS_LOG_COMPONENT_DEFINE("UwbModuleDrandState");
 
+	NS_OBJECT_ENSURE_REGISTERED(UwbModuleDrandState);
+
 	TypeId UwbModuleDrandState::GetTypeId()
 	{
 		static TypeId tid = TypeId("ns3::UwbModuleDrandState")
 			.SetParent<UwbModuleAbstractState>();
-
-			//m_
 
 			return tid;
 	}
@@ -55,45 +56,95 @@ namespace ns3
 	void UwbModuleDrandState::Receive(Ptr<Packet> p)
 	{
 		NS_LOG_FUNCTION(this);
-		m_state->Receive(p);
+
+		UwbModuleDrandPacketType packetType = UwbModuleDrandProtocol::Get().GetPacketType(p);
+
+		NS_LOG_INFO(packetType);
+
+		switch (packetType)
+		{
+		case UWB_MODULE_DRAND_REQUEST:
+			m_state->Request(p);
+			break;
+			
+		case UWB_MODULE_DRAND_FAIL:
+			m_state->Fail(p);
+			break;
+
+		case UWB_MODULE_DRAND_GRANT:
+			m_state->Grant(p);
+			break;
+
+		case UWB_MODULE_DRAND_REJECT:
+			m_state->Reject(p);
+			break;
+
+		case UWB_MODULE_DRAND_RELEASE:
+			m_state->Release(p);
+			break;
+
+		default:
+
+			break;
+		}
+
 	}
 
-	void UwbModuleDrandState::SetState(Ptr<UwbModuleAbstractState> state)
+	void UwbModuleDrandState::SetState(Ptr<UwbModuleAbsDrandState> state)
 	{
 		NS_LOG_FUNCTION(this << state);
+
 		m_state = state;
 	}
 
-	Ptr<UwbModuleAbstractState> UwbModuleDrandState::GetState() const
+	Ptr<UwbModuleAbsDrandState> UwbModuleDrandState::GetState() const
 	{
 		NS_LOG_FUNCTION(this);
+
 		return m_state;
 	}
 
 	void UwbModuleDrandState::SetNeighbors(const std::set<Mac64Address> addresses)
 	{
+		NS_LOG_FUNCTION(this);
+
 		m_addresses = addresses;
 	}
 
 	const std::set<Mac64Address> & UwbModuleDrandState::GetNeighbors() const
 	{
+		NS_LOG_FUNCTION(this);
+
 		return m_addresses;
 	}
 
 
 	const std::map<uint32_t, Mac64Address> UwbModuleDrandState::getTurns() const
 	{
+		NS_LOG_FUNCTION(this);
+
 		return m_turns;
 	}
 
 	void UwbModuleDrandState::setTurn(uint32_t turn, Mac64Address address)
 	{
+		NS_LOG_FUNCTION(this);
+
 		//m_turns.insert(turn, address);
 	}
 
-	uint32_t UwbModuleDrandState::getFirstTurn() const
+	Ptr<UwbModuleManager> UwbModuleDrandState::GetManager() const
 	{
-		return m_firstTurn;
+		NS_LOG_FUNCTION(this);
+
+		return m_manager;
+	}
+
+	void UwbModuleDrandState::SetManager(Ptr<UwbModuleManager> manager)
+	{
+		NS_LOG_FUNCTION(this<< manager);
+
+		m_manager = manager;
 	}
 
 }

@@ -20,6 +20,8 @@ namespace ns3
 {
 	NS_LOG_COMPONENT_DEFINE("UwbModuleAbstractState");
 
+	NS_OBJECT_ENSURE_REGISTERED(UwbModuleAbstractState);
+
 	TypeId UwbModuleAbstractState::GetTypeId()
 	{
 		static TypeId tid = TypeId("ns3::UwbModuleAbstractState")

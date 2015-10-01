@@ -52,7 +52,7 @@ namespace ns3
 	{
 		NS_LOG_FUNCTION_NOARGS();
 
-		TypeId tid = TypeId("ns3::UwbModuleMacHeader")
+		static TypeId tid = TypeId("ns3::UwbModuleMacHeader")
 			.SetParent<Header>();
 
 		return tid;
@@ -87,8 +87,9 @@ namespace ns3
 
 		Address receiver, sender;
 
-		ReadFrom(i, receiver, 8);
 		ReadFrom(i, sender, 8);
+		ReadFrom(i, receiver, 8);
+		
 
 		SetReceiverEuid(Mac64Address::ConvertFrom(receiver));
 		SetSenderEuid(Mac64Address::ConvertFrom(sender));
@@ -100,6 +101,13 @@ namespace ns3
 	void UwbModuleMacHeader::Print(std::ostream &os) const
 	{
 		NS_LOG_FUNCTION(this);
+	}
+
+	TypeId UwbModuleMacHeader::GetInstanceTypeId(void) const
+	{
+		NS_LOG_FUNCTION(this);
+
+		return GetTypeId();
 	}
 
 }

@@ -18,18 +18,25 @@
 #include <ns3/log.h>
 #include <ns3/simulator.h>
 #include <ns3/uwb-module-drand-app.h>
-
+#include <ns3/uwb-module-drand-protocol.h>
+#include <ns3/uwb-module-idle-state.h>
+#include <ns3/nstime.h>
+#include <ns3/uwb-module-mac-header.h>
 
 namespace ns3
 {
 	NS_LOG_COMPONENT_DEFINE("UwbModuleRequestState");
+
+	NS_OBJECT_ENSURE_REGISTERED(UwbModuleRequestState);
+
+	Time UwbModuleRequestState::m_waiting = MilliSeconds(10.0);
 
 	TypeId UwbModuleRequestState::GetTypeId()
 	{
 		NS_LOG_FUNCTION_NOARGS();
 
 		static TypeId tid = TypeId("ns3::UwbModuleReleaseState")
-			.SetParent<UwbModuleAbstractState>();
+			.SetParent<UwbModuleAbsDrandState>();
 
 		return tid;
 	}
@@ -48,6 +55,7 @@ namespace ns3
 	{
 		NS_LOG_FUNCTION(this << p);
 
+		//
 
 
 	}
@@ -76,8 +84,77 @@ namespace ns3
 	{
 		NS_LOG_FUNCTION(this);
 
-		Ptr<UwbModuleDrandApp> app = DynamicCast<UwbModuleDrandApp>(m_drand);
+		Ptr<UwbModuleDrandApp> app = DynamicCast<UwbModuleDrandApp>(m_drand->GetManager());
+
+		Address address = app->GetNetDevice()->GetAddress();
+		Mac64Address srcAddress = Mac64Address::ConvertFrom(address);
+
+		Ptr<Packet> packet = UwbModuleDrandProtocol::Get().GenerateRequest(srcAddress);
+
+		app->GetNetDevice()->Send(packet, Mac64Address("FF:FF:FF:FF:FF:FF:FF:FF"),17);
+
+		m_evt =  Simulator::Schedule(m_waiting, &UwbModuleRequestState::Timeout, this);
 
 	}
+
+
+	void UwbModuleRequestState::Reject(Ptr<const Packet> p)
+	{
+		NS_LOG_FUNCTION(this);
+
+		//Reject
+
+		//Stop timeout
+
+	}
+
+	void UwbModuleRequestState::Grant(Ptr<const Packet> p)
+	{
+		NS_LOG_FUNCTION(this);
+
+		//Grant
+
+		//Reset Time out every
+
+	}
+
+	void UwbModuleRequestState::Request(Ptr<const Packet> p)
+	{
+		NS_LOG_FUNCTION(this);
+
+		//Grant
+
+		//Reset Time out every
+
+	}
+
+	void UwbModuleRequestState::Timeout(void)
+	{
+		NS_LOG_FUNCTION(this);
+
+		SendFail();
+
+		Ptr<UwbModuleAbsDrandState> state = CreateObject<UwbModuleIdleState>(m_drand);
+
+		m_drand->SetState(state);
+		state->Start();
+
+	}
+
+	void UwbModuleRequestState::SendFail()
+	{
+		NS_LOG_FUNCTION(this);
+
+		Ptr<UwbModuleDrandApp> app = DynamicCast<UwbModuleDrandApp>(m_drand->GetManager());
+
+		Address address = app->GetNetDevice()->GetAddress();
+		Mac64Address srcAddress = Mac64Address::ConvertFrom(address);
+
+		Ptr<Packet> packet = UwbModuleDrandProtocol::Get().GenerateFail(srcAddress);
+
+		app->GetNetDevice()->Send(packet, Mac64Address("FF:FF:FF:FF:FF:FF:FF:FF"), 17);
+
+	}
+
 
 }

@@ -17,9 +17,9 @@
 #define UWB_MODULE_DRAND_STATE_H
 
 #include <ns3/uwb-module-abstract-state.h>
+#include <ns3/uwb-module-abs-drand-state.h>
 #include <ns3/uwb-module-manager.h>
 #include <ns3/mac64-address.h>
-
 
 #include <set>
 #include <map>
@@ -38,8 +38,8 @@ namespace ns3
 		virtual void Start();
 		virtual void Receive(Ptr<Packet> p);
 
-		void SetState(Ptr<UwbModuleAbstractState> state);
-		Ptr<UwbModuleAbstractState> GetState() const;
+		void SetState(Ptr<UwbModuleAbsDrandState> state);
+		Ptr<UwbModuleAbsDrandState> GetState() const;
 
 		void SetNeighbors(const std::set<Mac64Address> addresses);
 		const std::set<Mac64Address> & GetNeighbors() const;
@@ -47,17 +47,16 @@ namespace ns3
 		const std::map<uint32_t, Mac64Address> getTurns() const;
 		void setTurn(uint32_t turn, Mac64Address address);
 
-		uint32_t getFirstTurn() const;
+		Ptr<UwbModuleManager> GetManager() const;
+		void SetManager(Ptr<UwbModuleManager> manager);
 
 	protected:
 
-		Ptr<UwbModuleAbstractState> m_state;
+		Ptr<UwbModuleAbsDrandState> m_state;
 		Ptr<UwbModuleManager> m_manager;
 
 		std::set<Mac64Address> m_addresses;
 		std::map<uint32_t,Mac64Address> m_turns;
-
-		uint32_t m_firstTurn;
 
 	};
 }

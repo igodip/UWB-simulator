@@ -16,11 +16,17 @@
 #ifndef UWB_MODULE_RELEASE_STATE_H
 #define UWB_MODULE_RELEASE_STATE_H
 
-#include <ns3/uwb-module-drand-state.h>
+#include "uwb-module-drand-state.h"
+#include "uwb-module-abs-drand-state.h"
+
+#include <ns3/event-id.h>
+#include <ns3/nstime.h>
+
+#include <set>
 
 namespace ns3
 {
-	class UwbModuleReleaseState : public UwbModuleAbstractState
+	class UwbModuleReleaseState : public UwbModuleAbsDrandState
 	{
 	public:
 
@@ -31,10 +37,17 @@ namespace ns3
 
 		virtual void Start();
 		virtual void Receive(Ptr<Packet> p);
+		
+		virtual void Request(Ptr<Packet> p);
+		virtual void Release(Ptr<Packet> p);
 
 	private:
 
 		Ptr<UwbModuleDrandState> m_drand;
+
+		
+
+
 
 	};
 }

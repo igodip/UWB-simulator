@@ -26,6 +26,7 @@ namespace ns3
 	public:
 
 		static TypeId GetTypeId(void);
+		virtual TypeId GetInstanceTypeId(void) const;
 		virtual ~UwbModuleMacHeader();
 
 		void SetSenderEuid(const Mac64Address & euid);

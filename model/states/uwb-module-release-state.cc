@@ -20,6 +20,8 @@ namespace ns3
 {
 	NS_LOG_COMPONENT_DEFINE("UwbModuleReleaseState");
 
+	NS_OBJECT_ENSURE_REGISTERED(UwbModuleReleaseState);
+
 	UwbModuleReleaseState::UwbModuleReleaseState(Ptr<UwbModuleDrandState> state)
 	{
 		NS_LOG_FUNCTION(this << state);
@@ -30,7 +32,7 @@ namespace ns3
 		NS_LOG_FUNCTION_NOARGS();
 
 		static TypeId tid = TypeId("ns3::UwbModuleReleaseState")
-			.SetParent<UwbModuleAbstractState>();
+			.SetParent<UwbModuleAbsDrandState>();
 
 		return tid;
 	}
@@ -48,6 +50,16 @@ namespace ns3
 		NS_LOG_FUNCTION(this << p);
 
 		// Wait for receive packets
+	}
+
+	void UwbModuleReleaseState::Request(Ptr<Packet> p)
+	{
+		NS_LOG_FUNCTION(this << p);
+	}
+	
+	void UwbModuleReleaseState::Release(Ptr<Packet> p)
+	{
+		NS_LOG_FUNCTION(this << p);
 	}
 
 }

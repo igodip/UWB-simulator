@@ -19,10 +19,15 @@
 #include <ns3/random-variable-stream.h>
 #include <ns3/double.h>
 #include <ns3/uwb-module-request-state.h>
+#include <ns3/uwb-module-drand-state.h>
+#include <ns3/uwb-module-grant-state.h>
+#include <ns3/abort.h>
 
 namespace ns3
 {
 	NS_LOG_COMPONENT_DEFINE("UwbModuleIdleState");
+
+	NS_OBJECT_ENSURE_REGISTERED(UwbModuleIdleState);
 
 	Time UwbModuleIdleState::m_waitTime = MilliSeconds(10.0);
 	double UwbModuleIdleState::m_threshold = 0.7;
@@ -42,7 +47,8 @@ namespace ns3
 	TypeId UwbModuleIdleState::GetTypeId()
 	{
 		static TypeId tid = TypeId("ns3::UwbModuleIdleState")
-			.SetParent<UwbModuleAbstractState>();
+			.SetParent<UwbModuleAbsDrandState>();
+
 
 		return tid;
 	}
@@ -59,12 +65,8 @@ namespace ns3
 	void UwbModuleIdleState::Receive(Ptr<Packet> p)
 	{
 		NS_LOG_FUNCTION(this);
-		
-		//Se ricevo un pacchetto
-		//Grant state o aggiorna il tuo stato
 
-
-
+		NS_ABORT_MSG("Not implemented!");
 
 	}
 
@@ -80,6 +82,25 @@ namespace ns3
 
 		m_state->SetState(CreateObject<UwbModuleRequestState>(m_state));
 		m_state->GetState()->Start();
+
+	}
+
+	void UwbModuleIdleState::Request(Ptr<const Packet> p)
+	{
+		NS_LOG_FUNCTION(this);
+
+		Ptr<UwbModuleAbsDrandState> state = CreateObject<UwbModuleGrantState>(m_state);
+
+		m_state->SetState(state);
+		m_state->GetState()->Start();
+		
+	}
+
+	void UwbModuleIdleState::Release(Ptr<const Packet> p)
+	{
+		NS_LOG_FUNCTION(this);
+
+		//Check if it's one hop release or two release.
 
 	}
 }

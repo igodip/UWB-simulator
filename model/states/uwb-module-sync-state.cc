@@ -14,9 +14,15 @@
 */
 
 #include "uwb-module-sync-state.h"
+#include <ns3/log.h>
 
 namespace ns3
 {
+
+	NS_LOG_COMPONENT_DEFINE("UwbModuleSyncState");
+
+	NS_OBJECT_ENSURE_REGISTERED(UwbModuleSyncState);
+
 	TypeId UwbModuleSyncState::GetTypeId()
 	{
 		static TypeId tid = TypeId("ns3::UwbModuleSyncState")

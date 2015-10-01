@@ -16,6 +16,7 @@
 #ifndef UWB_MODULE_IDLE_STATE_H
 #define UWB_MODULE_IDLE_STATE_H
 
+#include <ns3/uwb-module-abs-drand-state.h>
 #include <ns3/uwb-module-drand-state.h>
 #include <ns3/event-id.h>
 #include <ns3/random-variable-stream.h>
@@ -25,7 +26,7 @@
 namespace ns3
 {
 	
-	class UwbModuleIdleState : public UwbModuleAbstractState
+	class UwbModuleIdleState : public UwbModuleAbsDrandState
 	{
 	public:
 
@@ -36,6 +37,9 @@ namespace ns3
 		virtual void Start();
 		virtual void Receive(Ptr<Packet> p);
 	
+		virtual void Request(Ptr<const Packet> p);
+		virtual void Release(Ptr<const Packet> p);
+
 	protected:
 		
 		void TryRequest();

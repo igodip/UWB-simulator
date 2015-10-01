@@ -18,26 +18,57 @@
 
 #include <ns3/packet.h>
 #include <ns3/mac64-address.h>
+#include <ns3/uwb-module-net-device.h>
 
 #include <map>
 
+#define UWB_MODULE_DRAND_PROTOCOL 0x3F
+
 namespace ns3
 {
+
+	enum UwbModuleDrandPacketType
+	{
+		UWB_MODULE_DRAND_REQUEST ,
+		UWB_MODULE_DRAND_GRANT   ,
+		UWB_MODULE_DRAND_RELEASE ,
+		UWB_MODULE_DRAND_REJECT  ,
+		UWB_MODULE_DRAND_FAIL   ,
+		UWB_MODULE_DRAND_NOT
+	};
+
+	enum UwbModuleDrandReleaseType
+	{
+		UWB_MODULE_DRAND_ONE_HOP_RELEASE,
+		UWB_MODULE_DRAND_TWO_HOP_RELEASE
+	};
+
 	class UwbModuleDrandProtocol 
 	{
 	public:
+
+		static UwbModuleDrandProtocol & Get();
+		
+
+		Ptr<Packet> GenerateRequest(const Mac64Address & sender);
+		Ptr<Packet> GenerateGrant(const Mac64Address & sender,const Mac64Address & receiver, const std::map<uint32_t, Mac64Address>  & turns);
+		Ptr<Packet> GenerateRelease(const Mac64Address & sender, uint32_t turn, Mac64Address owner,UwbModuleDrandReleaseType type);
+		Ptr<Packet> GenerateReject(const Mac64Address & sender, const Mac64Address & address);
+		Ptr<Packet> GenerateFail(const Mac64Address & sender);
+
+		UwbModuleDrandPacketType GetPacketType(Ptr< Packet> p);
+
+		void ParseRequest(Ptr<const Packet> p, Mac64Address & sender);
+		void ParseGrant(Ptr<const Packet> p, std::map<uint32_t, Mac64Address> & turns);
+		void ParseRelease(Ptr<const Packet> p, Mac64Address & sender);
+		void ParseReject(Ptr<const Packet> p, Mac64Address & sender);
+		void ParseFail(Ptr<const Packet> p, Mac64Address & sender);
+		//void ParseRelease(Ptr<const Packet> p,)
+
+	protected:
 		UwbModuleDrandProtocol();
 		~UwbModuleDrandProtocol();
 
-		
-
-		Ptr<Packet> GenerateRequest();
-		Ptr<Packet> GenerateGrant(const std::map<uint32_t, Mac64Address>  & turns);
-		Ptr<Packet> GenerateRelease(uint32_t turn, Mac64Address owner);
-		Ptr<Packet> GenerateReject();
-		Ptr<Packet> GenerateFail();
-
-	private:
 		
 	};
 }

@@ -113,13 +113,6 @@ namespace ns3
 
 		Ptr<UwbModuleSpectrumSignalParameters> uwbRxParams = DynamicCast<UwbModuleSpectrumSignalParameters>(params);
 
-		// It isn't an our packet
-		if (uwbRxParams == 0)
-		{
-			m_busy = Simulator::Schedule(params->duration, &UwbModulePhy::EndRx, this, params);
-			return;
-		}
-
 		// If is busy receiving discard a packet
 		if (m_busy.IsRunning())
 		{
@@ -127,6 +120,15 @@ namespace ns3
 			m_phyRxDropTrace(uwbRxParams->packetBurst->GetPackets().front());
 			return;
 		}
+
+		// It isn't an our packet
+		if (uwbRxParams == 0)
+		{
+			m_busy = Simulator::Schedule(params->duration, &UwbModulePhy::EndRx, this, params);
+			return;
+		}
+
+
 			
 
 		UwbModuleSpectrumSignalParameters psdHelper;
@@ -158,6 +160,11 @@ namespace ns3
 	{
 		NS_LOG_FUNCTION(this << params);
 		
+		if (m_busy.IsRunning())
+		{
+			NS_LOG_INFO("Busy receiving / trasmitting");
+		}
+
 		m_channel->StartTx(params);
 		Ptr<Packet> p = (params->packetBurst->GetPackets()).front();
 		m_phyTxBeginTrace(p);

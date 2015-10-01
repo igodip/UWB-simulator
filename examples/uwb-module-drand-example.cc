@@ -29,10 +29,12 @@ NS_LOG_COMPONENT_DEFINE("UwbModuleDrandExample");
 int main(int argc, char** argv)
 {
 	LogComponentEnable("UwbModuleDrandExample", LOG_LEVEL_ALL);
+	//LogComponentEnable("UwbModulePhy", LOG_LEVEL_ALL);
 	//LogComponentEnable("UwbModuleDrandApp", LOG_LEVEL_ALL);
-	LogComponentEnable("UwbModuleIdleState", LOG_LEVEL_ALL);
-	LogComponentEnable("UwbModuleDrandState", LOG_LEVEL_ALL);
-	LogComponentEnable("UwbModuleRequestState", LOG_LEVEL_ALL);
+	LogComponentEnable("UwbModuleIdleState", LOG_LEVEL_INFO);
+	//LogComponentEnable("UwbModuleDrandState", LOG_LEVEL_INFO);
+	LogComponentEnable("UwbModuleDrandProtocol", LOG_LEVEL_INFO);
+	//LogComponentEnable("UwbModuleRequestState", LOG_LEVEL_ALL);
 	//LogComponentEnable("UwbModuleNeighborDiscoveryState", LOG_LEVEL_ALL);
 	//LogComponentEnable("UwbModuleDrandApp", LOG_LEVEL_ALL);
 

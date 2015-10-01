@@ -22,6 +22,7 @@
 #include <ns3/mac64-address.h>
 #include <ns3/mobility-model.h>
 #include <ns3/uwb-module-net-device.h>
+#include <ns3/uwb-module-mac-header.h>
 
 using namespace ns3;
 
@@ -39,11 +40,36 @@ void sendPacket(Ptr<Node> n1)
 
 int main(int argc, char ** argv)
 {
+	LogComponentEnable("UwbModulePhyExample", LOG_LEVEL_ALL);
+	//LogComponentEnable("UwbModuleNetDevice", LOG_LEVEL_ALL);
+	//LogComponentEnable("UwbModulePhy", LOG_LEVEL_ALL);
+	//LogComponentEnable("SingleModelSpectrumChannel", LOG_LEVEL_ALL);
+	//LogComponentEnable("UwbModulePhyExample",LOG_LEVEL_ALL);
 
-	LogComponentEnable("UwbModuleNetDevice", LOG_LEVEL_ALL);
-	LogComponentEnable("UwbModulePhy", LOG_LEVEL_ALL);
-	LogComponentEnable("SingleModelSpectrumChannel", LOG_LEVEL_ALL);
-	LogComponentEnable("UwbModulePhyExample",LOG_LEVEL_ALL);
+	NS_LOG_INFO("Trying header");
+
+	UwbModuleMacHeader header, header2;
+	header.SetSenderEuid(Mac64Address("00:00:00:00:00:00:00:01"));
+	header.SetReceiverEuid(Mac64Address("00:00:00:00:00:00:00:02"));
+
+	Ptr<Packet> packet = Create<Packet>();
+	
+
+	packet->AddHeader(header);
+
+	packet->RemoveHeader(header2);
+
+	if (header2.GetReceiverEuid() != Mac64Address("00:00:00:00:00:00:00:02"))
+	{
+		NS_LOG_WARN("Receiver Euid not equal");
+		
+	}
+
+	if (header2.GetSenderEuid() != Mac64Address("00:00:00:00:00:00:00:01"))
+	{
+		NS_LOG_WARN("Sender Euid not equal");
+		NS_LOG_INFO(header2.GetSenderEuid());
+	}
 
 	Ptr<Node> n1, n2;
 	n1 = CreateObject<Node>();

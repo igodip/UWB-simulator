@@ -17,14 +17,16 @@
 #define UWB_MODULE_REQUEST_STATE_H
 
 #include <ns3/uwb-module-drand-state.h>
+#include <ns3/uwb-module-abs-drand-state.h>
 #include <ns3/random-variable-stream.h>
 #include <ns3/event-id.h>
+#include <ns3/nstime.h>
 
 #include <set>
 
 namespace ns3
 {
-	class UwbModuleRequestState : public UwbModuleAbstractState
+	class UwbModuleRequestState : public UwbModuleAbsDrandState
 	{
 	public:
 		
@@ -36,12 +38,25 @@ namespace ns3
 		virtual void Start();
 		virtual void Receive(Ptr<Packet> p);
 
+		virtual void Reject(Ptr<const Packet> p);
+		virtual void Grant(Ptr<const Packet> p);
+		virtual void Request(Ptr<const Packet> p);
+
 	protected:
 		Ptr<UniformRandomVariable> m_rand;
+		
 		Ptr<UwbModuleDrandState> m_drand;
 		EventId m_evt;
 
 		void SendRequest();
+		void SendFail();
+
+		std::set<Mac64Address> answers;
+
+		void Timeout();
+		EventId m_requestTimeout;
+
+		static Time m_waiting;
 	};
 }
 
